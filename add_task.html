@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Add Task</title>
+        <link rel="icon" href="assets\img\Join.png" />
+        <link rel="stylesheet" href="./style_main.css" />
+        <link rel="stylesheet" href="./style_sub.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+        <script src="./js/storage.js"></script>
+        <script src="./js/menu.js"></script>
+        <script src="./js/register.js"></script>
+        <script src="./js/loadHTML.js"></script>
+        <script src="./js/html-AT-C.js"></script>
+        <script src="./js/add_task.js"></script>
+        <style>
+            .sec-menu-board-task {
+                background-color: rgb(9, 25, 49);
+                pointer-events: none;
+            }
+
+            .sec-menu-flex-police p {
+                padding: 0px;
+            }
+        </style>
+    </head>
+
+    <body onload="init(), loadStorage()">
+        <div w3-include-html="./assets/templates/desktop_template.html"></div>
+        <div id="add_task_page"></div>
+    </body>
+</html>

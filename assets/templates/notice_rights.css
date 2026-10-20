@@ -1,0 +1,39 @@
+.menu span {
+    padding-top: 36px;
+    padding-bottom: 36px;
+
+}
+@media only screen and (max-width: 1300px) {
+    .sec-menu{
+        display: none;
+    }
+    .menu{
+        span{
+            margin-right: 30%;
+            margin-left: 0px;
+        }
+    }
+    .menu-joinlogo-handy{
+        display: block;
+        width: 64px;
+        margin-left: 40px;
+    }
+}
+@media only screen and (max-width: 700px) {
+    .sec-menu{
+        display: none !important;
+    }
+    .menu{
+        span{
+            margin-right: 30%;
+            margin-left: 0px;
+        }
+    }
+    .menu-joinlogo-handy{
+        display: block;
+        width: 64px;
+        margin-top: 16px;
+        margin-bottom: 16px;
+        margin-left: 20px !important;
+    }
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Contacts</title>
+        <link rel="icon" href="assets\img\Join.png" />
+        <link rel="stylesheet" href="./style_main.css">
+        <link rel="stylesheet" href="./style_sub.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+        <script src="./js/storage.js"></script>
+        <script src="./js/menu.js"></script>
+        <script src="./js/loadHTML.js"></script>
+        <script src="./js/html-AT-C.js"></script>
+        <script src="./js/contacts.js"></script>
+        <style>
+            .sec-menu-board-contacts {
+                background-color: rgb(9, 25, 49);
+                pointer-events: none;
+            }
+
+            .sec-menu-flex-police p {
+                padding: 0px;
+            }
+        </style>
+    </head>
+
+    <body onload="init(), loadStorage()">
+        <div w3-include-html="./assets/templates/desktop_template.html"></div>
+        <div class="overlay dnone"></div>
+        <main class="contacts">
+            <div class="contact-list-box">
+                <div class="add-contact-button-box">
+                    <button type="button" onclick="openContactAdding()">
+                        <span>Add new contact</span>
+                        <img src="./assets/img/person_add.svg" alt="person add" />
+                    </button>
+                </div>
+                <div id="contact-list"></div>
+            </div>
+            <div class="contact-detail">
+                <div class="contact-detail-head-wrapper">
+                    <div class="contact-detail-head">
+                        <h1>Contacts</h1>
+                        <div class="seperator-vertical-blue"></div>
+                        <div>
+                            <span>Better with a team</span>
+                        </div>
+                        <div class="seperator-horizontal-blue"></div>
+                    </div>
+                    <a class="go-back-button dnone">
+                        <img onclick="switchToDefault()" src="./assets/img/arrow_left.svg" alt="arrow_left" />
+                    </a>
+                </div>
+                <div class="contact-detail-box" id="contact-detail-box"></div>
+            </div>
+            <div class="open-menu-button-box dnone" onclick="openContactsSideMenu(event)">
+                <button type="button">
+                    <img src="./assets/img/more_vert.svg" alt="more" />
+                </button>
+            </div>
+            <div id="contact-added-notification">
+                <span>Contact successfully created</span>
+            </div>
+        </main>
+    </body>
+</html>

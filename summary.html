@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary</title>
+    <link rel="icon" href="assets\img\Join.png">
+    <link rel="stylesheet" href="./style_main.css">
+    <link rel="stylesheet" href="./style_sub.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <script src="./js/storage.js"></script>
+    <script src="./js/loadHTML.js"></script>
+    <script src="./js/menu.js"></script>
+    <script src="./js/summary.js"></script>
+    <style>
+        .sec-menu-board-summary {
+            background-color: rgb(9, 25, 49);
+            pointer-events: none;
+        }
+
+        .sec-menu-flex-police p {
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body onload="init(), loadStorage()">
+    <div w3-include-html="./assets/templates/desktop_template.html"></div>
+    <div class="summary-margin">
+        <div class="summary-join-360">
+            <h1>Join 360</h1>
+            <div class="summary-spacer"></div>
+            <p>Key Metrics at a Glance</p>
+            <div class="summary-spacer-handy"></div>
+        </div>
+        <div class="summary-tasks-flex">
+            <div class="summary-tasks">
+                <div class="summary-todo-done-flex">
+                    <a href="board.html" class="summary-todo-done">
+                        <img src="assets/img/to_do_img.png" class="summary-img">
+                        <img src="assets/img/to_do_img_white.png" class="summary-img-hover">
+                        <div class="summary-todo-done-numbers">
+                            <h3 id="summary_to_do">0</h3>
+                            <span>To-do</span>
+                        </div>
+                    </a>
+                    <a href="board.html" class="summary-todo-done">
+                        <img src="assets/img/done_img.png" class="summary-img">
+                        <img src="assets/img/dones_img_white.png" class="summary-img-hover">
+                        <div class="summary-todo-done-numbers">
+                            <h3 id="summary_done">0</h3>
+                            <span>Done</span>
+                        </div>
+                    </a>
+                </div>
+                <a href="board.html" class="summary-urgent-flex">
+                    <div class="summary-urgent">
+                        <img src="assets/img/urgent_img.png">
+                        <div class="summary-urgent-numbers">
+                            <h3 id="summary_urgent">0</h3>
+                            <span></span>Urgent</span>
+                        </div>
+                    </div>
+                    <div class="summary-urgent-spacer"></div>
+                    <div class="summary-upcoming-deadline">
+                        <h3 id="summary_deadline"></h3>
+                        <span id="summary_deadline_string">Upcoming Deadline</span>
+                    </div>
+                </a>
+                <div class="summary-board-progress-flex">
+                    <a href="board.html" class="summary-board-progress summary-board-progressl">
+                        <h3 id="summary_in_board">0</h3>
+                        <span>Tasks in <br> Board</span>
+                    </a>
+                    <a href="board.html" class="summary-board-progress">
+                        <h3 id="summary_progress">0</h3>
+                        <span>Tasks in <br> Progress</span>
+                    </a>
+                    <a href="board.html" class="summary-board-progress summary-board-progressr">
+                        <h3 id="summary_feedback">0</h3>
+                        <span>Awaiting <br> Feedback</span>
+                    </a>
+                </div>
+            </div>
+            <div class="summary-welcome">
+                <h2 id="summary_good_morning">Good morning,</h2>
+                <h1 id="sommary_name"></h1>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

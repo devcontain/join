@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Board</title>
+        <link rel="icon" href="assets\img\Join.png" />
+        <link rel="stylesheet" href="./style_main.css" />
+        <link rel="stylesheet" href="./style_sub.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+        <script src="./js/storage.js"></script>
+        <script src="./js/menu.js"></script>
+        <script src="./js/html-AT-C.js"></script>
+        <script src="./js/loadHTML.js"></script>
+        <script src="./js/add_task.js"></script>
+        <script src="./js/board.js"></script>
+
+        <style>
+            .sec-menu-board-board {
+                background-color: rgb(9, 25, 49);
+                pointer-events: none;
+            }
+
+            .sec-menu-flex-police p {
+                padding: 0px;
+            }
+        </style>
+    </head>
+
+    <body onload="init(), loadStorage()">
+        <div w3-include-html="./assets/templates/desktop_template.html"></div>
+        <section class="board-head">
+            <div class="place-bord-header-botton">
+                <h1 class="board">Board</h1>
+                <button onclick="bordAddNewTask()" class="add-task-new-button"></button>
+            </div>
+            <div class="place-search-task">
+                <form oninput="searchTitleStart()" class="search-task-tag">
+                    <input id="search_input" class="search-task-in" type="search" placeholder="Search..." />
+                    <button class="search-task-button" type="submit">Search</button>
+                </form>
+                <button onclick="bordAddNewTask()" class="add-task-button">Add task +</button>
+            </div>
+        </section>
+        <section class="board-body-task">
+            <div class="single-task-head">
+                <div class="place-bord-buttons">
+                    <p class="single-task-header">To do</p>
+                    <button onclick="bordAddNewTask()" class="style-task-button"></button>
+                </div>
+                <div class="single-task" id="to_do_place" ondrop="dropOn(event, 'todo')" ondragover="allowDrop(event)"></div>
+            </div>
+            <div id="in_progress_head" class="single-task-head">
+                <div class="place-bord-buttons">
+                    <p class="single-task-header">In progress</p>
+                    <button onclick="bordAddNewTask('in_progress_head')" class="style-task-button"></button>
+                </div>
+                <div class="single-task" id="in_progress_place" ondrop="dropOn(event, 'tasksinprogress')" ondragover="allowDrop(event)"></div>
+            </div>
+            <div id="await_feedback_head" class="single-task-head">
+                <div class="place-bord-buttons">
+                    <p class="single-task-header">Await feedback</p>
+                    <button onclick="bordAddNewTask('await_feedback_head')" class="style-task-button"></button>
+                </div>
+                <div class="single-task" id="await_feedback_place" ondrop="dropOn(event, 'awaitingfeedback')" ondragover="allowDrop(event)"></div>
+            </div>
+            <div id="done_head" class="single-task-head">
+                <div class="place-bord-buttons">
+                    <p class="single-task-header">Done</p>
+                </div>
+                <div class="single-task" id="done_place" ondrop="dropOn(event, 'done')" ondragover="allowDrop(event)"></div>
+            </div>
+        </section>
+        <section onclick="closeCard()" id="fullscreen_information" class="d-none">
+            <div class="information-bordcard" id="add_bordtask_data"></div>
+        </section>
+    </body>
+</html>
