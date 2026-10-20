@@ -2,73 +2,90 @@
  * A predefined token used to authenticate requests to a storage service.
  */
 
-const STORAGE_TOKEN = "GGZFU08ASMNAH3MBMGAP9RUCKGE5H1V5Z9CP0MF1";
+/* const STORAGE_TOKEN = "GGZFU08ASMNAH3MBMGAP9RUCKGE5H1V5Z9CP0MF1"; */
 
 /**
  * The base URL for the storage API.
  */
 
-const STORAGE_URL = "https://remote-storage.developerakademie.org/item";
-
-/**
- * Stores data in the remote storage using a POST request.
- * @param {string} key - The key under which the value should be stored.
- * @param {any} value - The data to store.
- * @returns - A promise that resolves with the JSON response from the storage API.
- */
+/* const STORAGE_URL = "https://remote-storage.developerakademie.org/item"; */
 
 async function setItem(key, value) {
-    const payload = { key, value, token: STORAGE_TOKEN };
-    return fetch(STORAGE_URL, { method: "POST", body: JSON.stringify(payload) }).then((res) => res.json());
+    if (key !== "users") {
+        throw new Error("Unsupported storage key");
+    }
+
+    const data = JSON.parse(value)[0];
+    const { name, email, password, ...projectData } = data;
+
+    const response = await fetch("https://join.devcontain.de/api/data.php", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(projectData)
+    });
+
+    if (!response.ok) {
+        throw new Error(`Saving failed: ${response.status}`);
+    }
+
+    return response.json();
 }
-
-/**
- * Retrieves data from the remote storage using a GET request.
-
- * @param {string} key -The key of the data to retrieve.
- * @returns - A promise that resolves to the parsed value stored under the specified key.
- */
 
 async function getItem(key) {
-    const url = `${STORAGE_URL}?key=${key}&token=${STORAGE_TOKEN}`;
-    return fetch(url)
-        .then((res) => res.json())
-        .then((res) => res.data.value)
-        .then((value) => JSON.parse(value));
-}
+    if (key !== "users") {
+        throw new Error("Unsupported storage key");
+    }
 
-/**
- * Loads the storage data and initializes the user interface based on session status. Uses session storage to determine if guest data is available. If no guest data, it loads all required data from local or session storage.
- */
+    const response = await fetch("https://join.devcontain.de/api/data.php", {
+        credentials: "same-origin"
+    });
+
+    if (!response.ok) {
+        throw new Error(`Loading failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return [data];
+}
 
 async function loadStorage() {
     if (sessionStorage.getItem("Guest") === null) {
-        await loadAllIfElseLocalOrSession();
+        try {
+            await loadAllIfElseLocalOrSession();
+        } catch (error) {
+            console.error("Loading user failed:", error);
+            window.location.replace("index.html");
+            return;
+        }
     } else {
-        loaduser = sessionStorage.getItem("userI");
+        loaduser = 0;
         users = JSON.parse(sessionStorage.getItem("Guest"));
     }
-    loadAllIfElse();
+
+    await loadAllIfElse();
+
     if (sessionStorage.getItem("Guest")) {
         await includeHTML();
     }
+
     menuLoginName();
 }
 
-/**
- * Determines whether to load data from local storage or session storage. Checks the session storage for a user indicator and loads user data accordingly. Calls ifLocalStorageExist() or ifSessionStorageExist() based on where the user data was found.
- */
-
 async function loadAllIfElseLocalOrSession() {
-    if (sessionStorage.getItem("userI") === null) {
-        users = await getItem("users");
-        loaduser = localStorage.getItem("userI");
-        ifLocalStorageExist();
-    } else {
-        users = await getItem("users");
-        loaduser = sessionStorage.getItem("userI");
-        ifSessionStorageExist;
+    users = await getItem("users");
+    loaduser = 0;
+
+    const response = await fetch("https://join.devcontain.de/api/me.php", {
+        credentials: "same-origin"
+    });
+
+    if (!response.ok) {
+        throw new Error(`User loading failed: ${response.status}`);
     }
+
+    const user = await response.json();
+    users[0].name = user.name;
 }
 
 /**

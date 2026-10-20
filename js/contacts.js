@@ -271,17 +271,26 @@ async function saveNewContact() {
     document.getElementById("contact-added-notification").classList.remove("notification-display");
 }
 
-/**
- * This function adds the data of the input-fields to the new contact-array.
- *
- * @returns - The new contact-array.
- */
 function buildNewContactArray() {
     let name = formatName(document.getElementById("add_contact_name").value);
-    let counter = users[loaduser].contacts.find((element) => element.idcounter).idcounter;
-    counter++;
-    users[loaduser].contacts.find((element) => element.idcounter).idcounter = counter;
-    return { id: counter, firstname: name.firstname, lastname: name.lastname, email: document.getElementById("add_contact_email").value, phone: document.getElementById("add_contact_phone").value, color: document.getElementById("add_contact_color").value };
+
+    let counterObject = users[loaduser].contacts.find((element) => element.idcounter !== undefined);
+
+    if (!counterObject) {
+        counterObject = { idcounter: 0 };
+        users[loaduser].contacts.unshift(counterObject);
+    }
+
+    counterObject.idcounter++;
+
+    return {
+        id: counterObject.idcounter,
+        firstname: name.firstname,
+        lastname: name.lastname,
+        email: document.getElementById("add_contact_email").value,
+        phone: document.getElementById("add_contact_phone").value,
+        color: document.getElementById("add_contact_color").value
+    };
 }
 
 /**

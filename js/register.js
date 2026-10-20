@@ -1,5 +1,5 @@
 let users = [];
-let loaduser = [];
+let loaduser = 0;
 let todo = [
     {
         title: "CSS Architecture Planning",
@@ -368,130 +368,96 @@ let contacts = [
         color: "#00BEE8",
     },]
 
-/**
- * This function checks if user information exists in localStorage. If it doesn't, it redirects to another HTML page. It also handles the initial loading of user data and resets specific sessionStorage items.
- */
-
 async function loadstorageitems() {
-    if (localStorage.getItem("userI") === null) {
-    } else {
-        if (localStorage.getItem("userI").length > 0) {
-            window.location.assign("summary.html");
-        }
-    }
-    loadUsers();
+    await loadUsers();
     sessionStorage.removeItem("userI");
     sessionStorage.removeItem("Guest");
     sessionStorage.removeItem("handyWelcomePlayed");
 }
 
-/**
- * Asynchronously retrieves user data from storage.
- */
-
 async function loadUsers() {
-    users = await getItem("users");
-}
+    const response = await fetch("https://join.devcontain.de/api/me.php", {
+        credentials: "same-origin"
+    });
 
-/**
- * Handles user registration by checking if an email already exists and if not, proceeds with registration.
- */
+    if (response.ok) {
+        window.location.assign("summary.html");
+    }
+}
 
 async function register() {
-    let sameemail = users.find((u) => u.email == register_email.value);
-    if (sameemail) {
-        register_email.setCustomValidity("Email already exists");
+    if (!register_email.checkValidity()) {
         register_email.reportValidity();
-    } else {
-        ifelseRegister();
+        return;
     }
-    setTimeout(function () {
-        register_email.setCustomValidity("");
-    }, 1400);
-}
 
-/**
- * Checks if the entered passwords match during registration. If they do, a new user is created and added to the users array.
- */
+    await ifelseRegister();
+}
 
 async function ifelseRegister() {
     if (register_pw_sign_in.value != register_pw_sign_in_confirm.value) {
         register_pw_sign_in_confirm.setCustomValidity("Passwords Don't Match");
         register_pw_sign_in_confirm.reportValidity();
     } else {
-        users.push({
-            name: register_name.value,
-            email: register_email.value,
-            password: register_pw_sign_in.value,
-            todo,
-            done: [],
-            Urgent,
-            tasksinprogress,
-            awaitingfeedback,
-            contacts,
-        });
-        await setItem("users", JSON.stringify(users));
-        resetForm();
+        try {
+            const response = await fetch("https://join.devcontain.de/api/register.php", {
+                method: "POST",
+                credentials: "same-origin",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: register_name.value,
+                    email: register_email.value,
+                    password: register_pw_sign_in.value
+                })
+            });
+
+            if (response.status === 409) {
+                register_email.setCustomValidity("Email already exists");
+                register_email.reportValidity();
+                return;
+            }
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Registration failed: ${response.status}`);
+            }
+
+            resetForm();
+        } catch (error) {
+            console.error("Registration failed:", error);
+        }
     }
     setTimeout(function () {
         register_pw_sign_in_confirm.setCustomValidity("");
+        register_email.setCustomValidity("");
     }, 1400);
 }
 
-/**
- * Performs user login by verifying credentials. Depending on a checkbox, it decides whether to save session information in localStorage or sessionStorage.
- */
 
-function login() {
-    let findusers = users.find((u) => u.email == register_login_value.value && u.password == register_pw_login_value.value);
+async function login() {
+    const response = await fetch("https://join.devcontain.de/api/login.php", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            email: register_login_value.value,
+            password: register_pw_login_value.value
+        })
+    });
 
-    if (login_checkbox.checked == true) {
-        LoginLocalstorage(findusers);
-    } else {
-        Loginsessionstorage(findusers);
-    }
-}
+    const result = await response.json();
 
-/**
- * These functions handle user login with localstorage
- * @param {object} findusers -The user object found that matches the credentials.
- */
-
-function LoginLocalstorage(findusers) {
-    if (findusers) {
-        let userI = users.findIndex((u) => u.email == register_login_value.value && u.password == register_pw_login_value.value);
-        loaduser.push(userI);
-        localStorage.setItem("userI", loaduser);
-        window.location.assign("summary.html");
-        loginValueEmpty();
-    } else {
+    if (!response.ok) {
         register_pw_login_value.setCustomValidity("Wrong Password or Email");
         register_pw_login_value.reportValidity();
+        return;
     }
-    setTimeout(function () {
-        register_pw_login_value.setCustomValidity("");
-    }, 1400);
-}
 
-/**
- * These functions handle user login with sessionstorage
- * @param {object} findusers -The user object found that matches the credentials.
- */
-
-function Loginsessionstorage(findusers) {
-    if (findusers) {
-        let userI = users.findIndex((u) => u.email == register_login_value.value && u.password == register_pw_login_value.value);
-        loaduser.push(userI);
-        sessionStorage.setItem("userI", loaduser);
-        window.location.assign("summary.html");
-        loginValueEmpty();
-    } else {
-        register_pw_login_value.setCustomValidity("Wrong Password or Email");
-        register_pw_login_value.reportValidity();
-    }
-    setTimeout(function () {
-        register_pw_login_value.setCustomValidity("");
-    }, 1400);
+    loaduser = 0;
+    sessionStorage.setItem("userI", loaduser);
+    sessionStorage.removeItem("Guest");
+    window.location.assign("summary.html");
+    console.log(result);
 }
 
 /**

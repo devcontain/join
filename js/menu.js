@@ -40,20 +40,37 @@ function menuInnerHTML() {
     <div class="open-menu">
         <a href="privacy_policy.html" class="open-menu-up"> <p>Privacy Policy</p> </a>
         <a href="legal_notice.html" class="open-menu-mid"> <p>Legal notice</p> </a>
-        <a href="index.html" class="open-menu-down" onclick="logOut()"> <p>Log out</p> </a>
+        <a href="#" class="open-menu-down" onclick="logOut(); return false;"> <p>Log out</p> </a>
     </div>
     <div class="menu-close" onclick="closeMenu()"></div>
     `;
 
     return menu;
 }
-/**
- * This function handles the user logout process. It clears specific user-related data from both local and session storage, and resets the global variable loaduser.
- */
-function logOut() {
-    loaduser = [];
-    localStorage.removeItem("userI");
-    sessionStorage.removeItem("userI");
-    sessionStorage.removeItem("Guest");
-    sessionStorage.removeItem("handyWelcomePlayed");
+
+async function logOut() {
+    try {
+        const response = await fetch("https://join.devcontain.de/api/logout.php", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Logout failed: ${response.status}`);
+        }
+
+        loaduser = 0;
+        localStorage.removeItem("userI");
+        sessionStorage.removeItem("userI");
+        sessionStorage.removeItem("Guest");
+        sessionStorage.removeItem("handyWelcomePlayed");
+
+        window.location.assign("index.html");
+    } catch (error) {
+        console.error("Logout failed:", error);
+        alert("Logout failed. Please try again.");
+    }
 }
+
+
