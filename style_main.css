@@ -489,6 +489,7 @@ button.move-mobile:hover {
     background-color: #FFFFFF;
     border-radius: 30px;
     color: #000000;
+
     .bottom-section {
         justify-content: flex-end;
         margin-right: 48px;
@@ -743,15 +744,18 @@ main.add-task {
     left: 223px;
     padding: 5% 0 0 5%;
     font-size: 20px;
+
     h1 {
         font-size: 61px;
         color: #000000;
         margin-top: 0;
         margin-bottom: 32px;
     }
+
     .add-task-form-section {
         display: flex;
         flex-direction: column;
+
         .input-wrapper {
             display: flex;
             flex-direction: row;
@@ -764,18 +768,22 @@ main.edit-task {
     font-size: 20px;
     overflow-y: auto;
     margin: 30px 0;
+
     h1 {
         font-size: 61px;
         color: #000000;
         margin-top: 0;
         margin-bottom: 32px;
     }
+
     .drop-down {
         position: relative;
     }
+
     .add-task-form-section {
         display: flex;
         flex-direction: column;
+
         .input-wrapper {
             .input-box {
                 margin: 20px 16px 20px 42px;
@@ -793,17 +801,21 @@ main.contacts {
     display: flex;
     height: calc(100vh - 105px);
     overflow: hidden;
+
     h1 {
         color: black;
     }
+
     .contact-list-box {
         width: 456px;
         background-color: white;
         box-shadow: 4px 0px 6px rgba(0, 0, 0, 0.08);
         /* overflow-y: auto; */
         height: 100%;
+
         .add-contact-button-box {
             margin: 22.5px 52px;
+
             button {
                 padding: 0;
                 cursor: pointer;
@@ -816,6 +828,7 @@ main.contacts {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+
                 span {
                     font-family: "Inter", sans-serif;
                     color: white;
@@ -823,28 +836,35 @@ main.contacts {
                     font-weight: 700;
                     margin-left: 64.5px;
                 }
+
                 img {
                     margin-right: 64.5px;
                 }
             }
+
             button:hover {
                 background-color: #5dbee7;
                 box-shadow: 0px 4px 4px #d1d1d1;
             }
+
             button:active {
                 background-color: #091931;
             }
         }
     }
+
     .contact-detail {
         padding: 5% 0 0 5%;
+
         .contact-detail-head {
             display: flex;
             align-items: center;
             font-size: 27px;
+
             h1 {
                 margin-block-start: 0;
             }
+
             .seperator-vertical-blue {
                 width: 3px;
                 height: 59px;
@@ -864,28 +884,35 @@ main.contacts {
         width: 440px;
         gap: 20px;
     }
+
     .box-left {
         margin-right: 48px;
     }
+
     .box-right {
         margin-left: 48px;
     }
+
     .separator-vertical {
         width: 2px;
         background-color: #d1d1d1;
     }
+
     h3 {
         font-size: 20px;
         margin: 0 0 8px 0;
         font-weight: 400;
     }
+
     .required-header {
         display: flex;
     }
+
     .input-with-button-wrapper {
         position: relative;
         display: flex;
         align-items: center;
+
         a {
             height: 24px;
             width: 24px;
@@ -897,10 +924,12 @@ main.contacts {
             z-index: 20;
             background-color: white;
         }
+
         a:hover {
             background-color: #f6f7f8;
         }
     }
+
     .required-field {
         font-size: 12px;
         font-family: "Poppins", sans-serif;
@@ -934,6 +963,7 @@ main.contacts {
         display: flex;
         align-items: center;
     }
+
     textarea {
         width: 398px;
         resize: none;
@@ -944,9 +974,11 @@ main.contacts {
         font-family: "Inter", sans-serif;
         padding: 20px;
     }
-     ::-webkit-resizer {
+
+    ::-webkit-resizer {
         display: none;
     }
+
     .textarea-wrapper::after {
         position: absolute;
         pointer-events: none;
@@ -955,20 +987,23 @@ main.contacts {
         width: 19px;
         bottom: 6px;
         right: 6px;
-        background: url(./assets/img/resize-handler.png) no-repeat;
+        background: url("./assets/img/resize-handler.png") no-repeat;
     }
 }
 
 #add_task_assigned_to {
-     ::placeholder {
+    ::placeholder {
         color: black;
     }
+
     #input_with_button_assigned_to {
         z-index: 300;
     }
+
     .drop-down {
         z-index: 290;
     }
+
     a {
         z-index: 310;
     }
@@ -981,20 +1016,18 @@ main.contacts {
         color: transparent;
         border: 0;
         outline: none !important;
-        background-color: transparent;
+        background: url("/assets/img/calendar.png") center no-repeat;
         width: 22px;
         height: 24px;
         padding: 0;
         z-index: 20;
-    }
-    input[type="date"]::-webkit-calendar-picker-indicator {
-        color: rgba(0, 0, 0, 0);
-        opacity: 1;
-        display: block;
-        background: url(./assets/img/calendar.png) center no-repeat;
-        width: 18px;
-        height: 20px;
         cursor: pointer;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        opacity: 0;
+        cursor: pointer;
+
     }
 }
 
@@ -1002,9 +1035,11 @@ main.contacts {
     #prio-buttons {
         display: flex;
         justify-content: space-between;
+
         input {
             display: none;
         }
+
         label {
             box-sizing: border-box;
             display: flex;
@@ -1020,39 +1055,49 @@ main.contacts {
             box-shadow: 0px 0px 4px #d1d1d1;
             border-radius: 10px;
             transition: ease-in-out 100ms;
+
             img {
                 width: 20px;
                 margin-left: 8px;
             }
+
             [alt="urgent"] {
                 filter: invert(41%) sepia(89%) saturate(5403%) hue-rotate(2deg) brightness(101%) contrast(107%);
             }
+
             [alt="medium"] {
                 filter: invert(54%) sepia(99%) saturate(1276%) hue-rotate(5deg) brightness(111%) contrast(102%);
             }
+
             [alt="low"] {
                 filter: invert(91%) sepia(88%) saturate(1842%) hue-rotate(32deg) brightness(94%) contrast(88%);
             }
         }
+
         label:not(.highlighted-button):hover {
             box-shadow: 0px 4px 4px #d1d1d1;
         }
+
         .highlighted-button {
             cursor: auto;
             color: white;
             font-size: 21px;
             font-weight: 700;
             border: none;
+
             img {
                 filter: invert(100%) sepia(0%) saturate(1%) hue-rotate(110deg) brightness(104%) contrast(101%) !important;
             }
         }
+
         .highlighted-button#prio_urgent_label {
             background-color: #ff3d00;
         }
+
         .highlighted-button#prio_medium_label {
             background-color: #ffa800;
         }
+
         .highlighted-button#prio_low_label {
             background-color: #7ae229;
         }
@@ -1060,15 +1105,18 @@ main.contacts {
 }
 
 #add_task_category {
-     ::placeholder {
+    ::placeholder {
         color: black;
     }
+
     #input_with_button_category {
         z-index: 200;
     }
+
     .drop-down {
         z-index: 190;
     }
+
     a {
         z-index: 210;
     }
@@ -1079,17 +1127,21 @@ main.contacts {
         z-index: 35;
         display: flex;
         margin-left: -72px;
+
         a {
             margin: 0 4px 0 4px;
         }
+
         .separator-vertical {
             width: 1px !important;
         }
     }
+
     #selected_subtasks {
         width: 440px;
         max-height: 160px;
         overflow-y: auto;
+
         .selected-subtask-container {
             display: flex;
             justify-content: space-between;
@@ -1097,24 +1149,30 @@ main.contacts {
             height: 32px;
             margin-top: 8px;
             padding: 0px 16px;
+
             ul {
                 margin: 0;
                 margin-block-start: 0;
+
                 li {
                     font-size: 16px;
                 }
             }
+
             input {
                 width: 100%;
                 border: none;
                 outline: none;
                 font-size: 16px;
             }
-             ::placeholder {
+
+            ::placeholder {
                 color: black;
             }
+
             .double-button-container {
                 display: flex;
+
                 a {
                     margin: 0 4px 0 4px;
                     height: 24px;
@@ -1123,19 +1181,23 @@ main.contacts {
                     justify-content: center;
                     align-items: center;
                 }
+
                 .separator-vertical {
                     width: 1px !important;
                 }
             }
         }
     }
+
     .selected-subtask-container:hover {
         background-color: #EEEEEE;
     }
+
     .border-bottom-blue {
         border-bottom: 1px solid #29ABE2;
         background-color: white;
     }
+
     .border-bottom-blue:hover {
         background-color: white;
     }
@@ -1147,6 +1209,7 @@ main.contacts {
     align-items: end;
     margin-top: 32px;
     margin-bottom: 50px;
+
     button {
         cursor: pointer;
         transition: ease-in-out 100ms;
@@ -1154,14 +1217,17 @@ main.contacts {
         height: 56px;
         margin-left: 16px;
         margin-bottom: 8px;
+
         img {
             margin-left: 10px;
         }
     }
+
     button.blue-button {
         width: 183px;
         background-color: #2A3647;
         border: none;
+
         span {
             font-size: 21px;
             color: white;
@@ -1175,6 +1241,7 @@ button {
     border-radius: 10px;
     height: 56px;
     margin-bottom: 8px;
+
     img {
         margin-left: 10px;
     }
@@ -1184,10 +1251,12 @@ button.white-button {
     width: 110px;
     background-color: #f6f7f8;
     border: 1px solid #2A3647;
+
     span {
         font-size: 20px;
         color: #2A3647;
     }
+
     img {
         margin-left: 10px;
         filter: invert(17%) sepia(10%) saturate(1965%) hue-rotate(176deg) brightness(92%) contrast(86%);
@@ -1197,9 +1266,11 @@ button.white-button {
 button.white-button:hover {
     border: 2px solid #5dbee7;
     box-shadow: 0px 4px 4px #d1d1d1;
+
     span {
         color: #5dbee7;
     }
+
     img {
         filter: invert(67%) sepia(42%) saturate(534%) hue-rotate(155deg) brightness(95%) contrast(90%);
     }
@@ -1207,9 +1278,11 @@ button.white-button:hover {
 
 button.white-button:active {
     border: 1px solid #091931;
+
     span {
         color: #091931;
     }
+
     img {
         filter: invert(7%) sepia(28%) saturate(3492%) hue-rotate(193deg) brightness(97%) contrast(97%);
     }
@@ -1220,10 +1293,12 @@ button.blue-button {
     margin-left: 25px;
     background-color: #2A3647;
     border: none;
+
     span {
         font-size: 21px;
         color: white;
     }
+
     img {
         margin-left: 10px;
     }
@@ -1256,10 +1331,12 @@ button.blue-button:active {
     padding: 16px;
     margin-bottom: 2px;
     border-radius: 10px;
+
     .profile-info-box {
         display: flex;
         align-items: center;
         font-size: 20px;
+
         .profile-fullname {
             margin-left: 16px;
         }
@@ -1290,9 +1367,11 @@ button.blue-button:active {
     margin: 0 52px 0px 52px;
     padding: 15px 0 15px 24px;
     min-height: 48px;
+
     .contact-info-box {
         width: 100%;
         display: flex;
+
         .profile-info {
             margin-left: 35px;
             color: black;
@@ -1300,6 +1379,7 @@ button.blue-button:active {
             flex-direction: column;
         }
     }
+
     .profile-fullname {
         margin-left: 0;
     }
@@ -1321,12 +1401,14 @@ a.disabled {
 
 .contact-list-separator-box {
     margin: 17px 52px 0 52px;
+
     .separator-horizontal {
         margin: 16px 0 8px 0;
         width: 100%;
         height: 2px;
         background-color: #d1d1d1;
     }
+
     #separator-letter-span {
         margin-left: 36px;
         color: black;
@@ -1339,6 +1421,7 @@ a.disabled {
 
 div.selected {
     background-color: #2A3647;
+
     .profile-fullname {
         color: white;
     }
@@ -1350,6 +1433,7 @@ div.selected:hover {
 
 #drop_down_category {
     overflow-y: auto;
+
     .drop-down-category-entry {
         display: flex;
         justify-content: space-between;
@@ -1357,10 +1441,12 @@ div.selected:hover {
         padding: 16px;
         border-radius: 10px;
         margin-bottom: 2px;
+
         span {
             font-size: 20px;
         }
     }
+
     .drop-down-category-entry:hover {
         background-color: #EEEEEE;
     }
@@ -1380,26 +1466,32 @@ div.selected:hover {
     height: 364px;
     min-width: 450px;
     color: black;
+
     .contact-detail-box-head {
         display: flex;
         align-items: center;
         margin-bottom: 21px;
+
         .profile-name-with-buttons-box {
             margin-left: 54px;
+
             .profile-name {
                 font-size: 47px;
                 font-weight: 500;
                 margin-bottom: 8px;
             }
+
             .profile-buttons {
                 display: flex;
                 height: 24px;
                 font-size: 16px;
                 gap: 16px;
+
                 a {
                     display: flex;
                     align-items: center;
                     gap: 8px;
+
                     img {
                         height: 24px;
                         width: 24px;
@@ -1409,13 +1501,16 @@ div.selected:hover {
             }
         }
     }
+
     .contact-information-box {
         height: 74px;
         display: flex;
         align-items: center;
     }
+
     .contact-detail-box-body {
         font-size: 16px;
+
         h4 {
             margin: 21px 0 15px 0;
         }
@@ -1425,6 +1520,7 @@ div.selected:hover {
 .profile-badge-big-box {
     display: flex;
     align-items: center;
+
     .profile-badge-big {
         display: flex;
         justify-content: center;
@@ -1446,9 +1542,11 @@ div.selected:hover {
     flex-direction: column;
     margin-left: 72px;
     gap: 32px;
+
     .input-with-img-wrapper {
         display: flex;
         align-items: center;
+
         img {
             position: relative;
             right: 45px;
@@ -1463,6 +1561,7 @@ div.selected:hover {
     margin-left: 290px;
     margin-bottom: 160px;
     font-size: 16px;
+
     .head-wrapper {
         font-size: 30px;
         display: flex;
@@ -1470,22 +1569,26 @@ div.selected:hover {
         justify-content: space-between;
         margin-right: 16.5px;
     }
+
     .text-box-wrapper {
         display: flex;
         align-items: start;
         margin-top: 24px;
+
         h2 {
             font-size: 27px;
             font-weight: 700;
             margin-bottom: 16px;
             margin-right: 35px;
         }
+
         h3 {
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 0;
         }
     }
+
     .enjoy {
         margin-top: 48px;
     }
@@ -1501,6 +1604,7 @@ div.selected:hover {
     width: 32px;
     border-radius: 16px;
     margin-top: 19px;
+
     img {
         filter: invert(56%) sepia(81%) saturate(1182%) hue-rotate(165deg) brightness(94%) contrast(87%) !important;
     }
@@ -1517,9 +1621,11 @@ div.selected:hover {
         left: 0;
         padding: 0;
     }
+
     h1 {
         margin: 32px 48px;
     }
+
     .bottom-section {
         margin: 32px 48px 0 48px;
     }
@@ -1538,9 +1644,11 @@ div.selected:hover {
     align-items: center;
     z-index: 420;
     display: none;
+
     span {
         margin-left: 30px;
     }
+
     img {
         margin-right: 30px;
     }
@@ -1570,6 +1678,7 @@ div.selected:hover {
     from {
         bottom: 0%;
     }
+
     to {
         bottom: 58%;
     }
@@ -1607,9 +1716,11 @@ div.selected:hover {
     .board-head {
         margin-left: 252px;
     }
+
     .board-head-task {
         margin-left: 252px;
     }
+
     .board-body-task {
         margin-left: 252px;
         margin-right: 32px;
@@ -1620,25 +1731,31 @@ div.selected:hover {
     .board-body-task {
         flex-direction: column;
     }
+
     .empty-task-place {
         width: 392px;
     }
+
     .place-bord-buttons {
         width: 392px;
     }
+
     .single-task-head {
         width: 100%;
         align-items: start;
     }
+
     .single-task {
         align-items: start;
         flex-direction: row;
         max-width: 100%;
         overflow: auto;
     }
+
     .single-task::-webkit-scrollbar {
         height: 4px;
     }
+
     .place-bord-buttons {
         padding-top: 8px;
         padding-bottom: 8px;
@@ -1649,15 +1766,19 @@ div.selected:hover {
         margin-right: 0px;
         margin-left: 0px;
     }
+
     .todo-task-container:hover {
         transform: rotate(3deg);
     }
+
     button.move-mobile {
         display: flex;
     }
+
     .box-hover {
         display: none;
     }
+
     .empty-task-place {
         margin-bottom: 0px;
     }
@@ -1669,12 +1790,15 @@ div.selected:hover {
             left: 104px;
         }
     }
+
     .board-head {
         margin-left: 132px;
     }
+
     .board-head-task {
         margin-left: 132px;
     }
+
     .board-body-task {
         margin-left: 132px;
     }
@@ -1683,44 +1807,55 @@ div.selected:hover {
 @media(max-width: 1200px) {
     main.add-task {
         left: calc(50% - 556px / 2) !important;
+
         .add-task-form-section {
             .input-wrapper {
                 flex-direction: column;
                 gap: 20px;
+
                 .box-left {
                     margin: 0;
                 }
+
                 .box-right {
                     margin: 0;
                 }
             }
         }
+
         .white-button {
             display: none;
         }
     }
+
     main.add-task::-webkit-scrollbar {
         width: 8px;
     }
+
     main.add-task::-webkit-scrollbar-thumb {
         background: #A8A8A8;
         border-radius: 8px;
     }
+
     main.add-task::-webkit-scrollbar-thumb:hover {
         background: #a8a8a8ad;
     }
+
     .create-task-button {
         height: 56px !important;
+
         img {
             margin-left: 10px !important;
             height: 12px !important;
             width: 16px !important;
         }
     }
+
     .bord-add-tasks-field {
         height: 750px;
         width: auto;
         justify-content: flex-start;
+
         main {
             position: relative;
             left: auto !important;
@@ -1731,6 +1866,7 @@ div.selected:hover {
             display: flex;
             flex-direction: column;
             align-items: center;
+
             .bottom-section {
                 margin: 0;
                 margin-top: 32px;
@@ -1745,6 +1881,7 @@ div.selected:hover {
             .input-wrapper {
                 margin-bottom: 200px;
             }
+
             .bottom-section {
                 height: 88px;
                 width: 100%;
@@ -1759,11 +1896,13 @@ div.selected:hover {
                 z-index: 800;
                 margin-bottom: 0;
                 box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);
+
                 button {
                     margin: 0;
                 }
             }
         }
+
         .bord-add-tasks-field {
             main {
                 .bottom-section {
@@ -1773,16 +1912,20 @@ div.selected:hover {
             }
         }
     }
+
     .board-body-task {
         margin-left: 48px;
         margin-bottom: 98px;
     }
+
     .board-head {
         margin-left: 48px;
     }
+
     .board-head-task {
         margin-left: 48px;
     }
+
     .single-task {
         flex-direction: row;
         align-items: start;
@@ -1794,15 +1937,19 @@ div.selected:hover {
         align-items: start;
         flex-direction: column;
     }
+
     .search-task-tag {
         width: 392px;
     }
+
     .search-task-in {
         width: 392px;
     }
+
     .add-task-button {
         display: none;
     }
+
     .add-task-new-button {
         display: flex;
     }
@@ -1811,81 +1958,101 @@ div.selected:hover {
 @media(max-width: 700px) {
     main.add-task {
         left: calc(50% - 340px / 2) !important;
+
         h1 {
             margin: 0;
             margin-bottom: 32px;
         }
     }
+
     .styled-input {
         width: 298px;
     }
+
     #add_task_description {
         textarea {
             width: 298px;
         }
     }
+
     #selected_contacts {
         width: 340px;
         max-height: fit-content;
     }
+
     .input-wrapper {
         .input-box {
             width: 340px;
             margin: 0;
         }
     }
+
     .drop-down {
         width: 340px;
         overflow-x: hidden;
+
         .profile-badge {
             height: 30px;
             width: 30px;
         }
+
         .profile-fullname {
             font-size: 16px;
         }
     }
+
     .add_task_prio {
         #prio-buttons {
             label {
                 font-size: 14px;
                 width: 90px;
+
                 img {
                     width: 14px;
                 }
             }
+
             .highlighted-button {
                 font-size: 14px;
             }
         }
     }
+
     #add_task_subtask {
         #selected_subtasks {
             width: 340px;
         }
     }
+
     .bord-add-tasks-field {
         width: 420px;
+
         main.add-task {
             left: auto !important;
         }
+
         #required-info {
             display: none;
         }
+
         .bottom-section {
             justify-content: flex-end;
+
             button.blue-button {
                 margin: 0;
             }
         }
     }
+
     .board-body-task {
         margin-left: 16px;
         margin-right: 16px;
     }
+
     .board-head {
         margin-left: 16px;
     }
+
     .board-head-task {
         margin-left: 16px;
     }
@@ -1895,102 +2062,125 @@ div.selected:hover {
     main.add-task {
         padding: 24px 0 0 0;
         left: calc(50% - 290px / 2) !important;
+
         h1 {
             font-size: 40px;
             margin-bottom: 16px;
         }
     }
+
     .styled-input {
         width: 248px;
         font-size: 16px;
     }
+
     #add_task_description {
         textarea {
             width: 248px;
             font-size: 16px;
         }
     }
+
     #selected_contacts {
         width: 290px;
         max-height: fit-content;
     }
+
     .input-wrapper {
         .input-box {
             width: 290px;
             margin: 0;
         }
     }
+
     .drop-down {
         width: 290px;
     }
+
     #add_task_subtask {
         #selected_subtasks {
             width: 290px;
         }
     }
+
     #required-info {
         display: none;
     }
+
     .bord-add-tasks-field {
         width: 280px;
         border-radius: 24px;
+
         main.add-task {
             margin-bottom: 32px;
             padding: 6px;
             left: auto;
+
             h1 {
                 font-size: 40px;
             }
         }
+
         .styled-input {
             width: 208px;
             font-size: 16px;
         }
+
         #add_task_description {
             textarea {
                 width: 208px;
                 font-size: 16px;
             }
         }
+
         #selected_contacts {
             width: 250px;
             max-height: fit-content;
         }
+
         .input-wrapper {
             .input-box {
                 width: 250px;
                 margin: 0;
             }
         }
+
         .drop-down {
             width: 250px;
         }
+
         #add_task_subtask {
             #selected_subtasks {
                 width: 250px;
             }
         }
+
         #required-info {
             display: none;
         }
+
         .add_task_prio {
             #prio-buttons {
                 label {
                     height: 40px;
                     width: 80px;
                     font-size: 12px;
+
                     img {
                         width: 10px;
                     }
                 }
             }
         }
+
         .create-task-button {
             height: 40px !important;
             width: 140px !important;
+
             span {
                 font-size: 16px !important;
             }
+
             img {
                 margin-left: 6px !important;
                 height: 12px !important;
@@ -2013,17 +2203,21 @@ div.selected:hover {
                 display: flex;
                 justify-content: space-between;
             }
+
             .contact-detail-head {
                 flex-direction: column;
                 margin-bottom: 32px;
                 align-items: flex-start;
+
                 h1 {
                     margin: 0;
                     margin-bottom: 16px;
                 }
+
                 .seperator-vertical-blue {
                     display: none;
                 }
+
                 .seperator-horizontal-blue {
                     width: 90px;
                     height: 3px;
@@ -2032,18 +2226,22 @@ div.selected:hover {
                     border-radius: 6px;
                 }
             }
+
             .contact-detail-box {
                 min-width: 380px;
+
                 .contact-detail-box-head {
                     .profile-name-with-buttons-box {
                         margin-left: 8px;
                     }
                 }
+
                 .profile-badge-big {
                     height: 76px;
                     width: 76px;
                     font-size: 27px;
                 }
+
                 .profile-name {
                     font-size: 26px;
                 }
@@ -2063,31 +2261,38 @@ div.selected:hover {
     main.contacts {
         position: absolute;
         left: 0;
+
         /* top: 85px; */
         .contact-detail {
             display: none;
         }
+
         .contact-list-box {
             height: calc(100vh - 181px);
             width: calc(100vw - 4px);
         }
+
         #contact-list {
             height: calc(100% - 144px);
             /* margin-bottom: 300px; */
         }
+
         .add-contact-button-box {
             display: flex;
             justify-content: center;
         }
+
         .mobile-contact-detail {
             display: flex;
             flex-direction: column;
             width: calc(100vw - 4px);
         }
+
         .go-back-button {
             margin-right: 16px;
         }
     }
+
     .open-menu-button-box {
         height: 56px;
         width: 56px;
@@ -2095,6 +2300,7 @@ div.selected:hover {
         bottom: 112px;
         right: 16px;
         margin: 0;
+
         button {
             background-color: #2A3647;
             border: none;
@@ -2104,6 +2310,7 @@ div.selected:hover {
             margin-bottom: 0;
             border-radius: 56px;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
             img {
                 height: 32px;
                 width: 32px;
@@ -2111,6 +2318,7 @@ div.selected:hover {
             }
         }
     }
+
     .contact-detail-box {
         .contact-detail-box-head {
             .profile-name-with-buttons-box {
@@ -2129,6 +2337,7 @@ div.selected:hover {
                     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
                     background-color: white;
                     z-index: 1;
+
                     a {
                         width: 96px;
                     }
@@ -2141,6 +2350,7 @@ div.selected:hover {
 @media(max-width: 700px) {
     main.contacts {
         top: 85px !important;
+
         .contact-list-box {
             height: calc(100vh - 165px);
         }
@@ -2152,66 +2362,83 @@ div.selected:hover {
         #contact-list {
             height: calc(100%);
         }
+
         .contact-list-separator-box {
             width: calc(100vw - 40px);
             margin: 16px 16px 16px 16px;
         }
+
         .contact {
             margin: 0 16px 0 16px;
             width: calc(100vw - 56px);
             padding: 8px 8px 8px 8px;
+
             .contact-info-box {
                 .profile-info {
                     margin-left: 8px;
+
                     .profile-fullname {
                         font-size: 16px;
                         margin-top: 2px;
                     }
+
                     .profile-email {
                         font-size: 14px;
                     }
                 }
             }
         }
+
         .contact-detail {
             .contact-detail-head {
                 margin-bottom: 16px;
                 font-size: 20px;
+
                 h1 {
                     font-size: 40px;
                     margin-bottom: 8px;
                 }
+
                 span {
                     font-size: 20px;
                 }
+
                 .seperator-horizontal-blue {
                     margin: 12px 0;
                 }
             }
+
             .contact-detail-box {
                 margin: 0;
                 min-width: 100px;
+
                 .contact-detail-box-head {
                     flex-direction: column;
+
                     .profile-name-with-buttons-box {
                         margin-left: 0;
+
                         .profile-name {
                             font-size: 28px;
                         }
                     }
                 }
+
                 .contact-information-box {
                     height: 32px;
                     margin-left: 10%;
                 }
+
                 .contact-detail-box-body {
                     margin-left: 10%;
+
                     h4 {
                         margin: 16px 0 8px 0;
                     }
                 }
             }
         }
+
         .contact-list-box {
             .add-contact-button-box {
                 height: 56px;
@@ -2220,6 +2447,7 @@ div.selected:hover {
                 bottom: 112px;
                 right: 16px;
                 margin: 0;
+
                 button {
                     height: 56px;
                     width: 56px;
@@ -2227,9 +2455,11 @@ div.selected:hover {
                     margin-bottom: 0;
                     border-radius: 56px;
                     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
                     span {
                         display: none;
                     }
+
                     img {
                         height: 32px;
                         width: 32px;
@@ -2268,6 +2498,7 @@ div.selected:hover {
     border-radius: 30px;
     z-index: 2048;
     display: flex;
+
     .overlay-box-head {
         height: calc(100% - 154px);
         width: calc(453px - 46px);
@@ -2276,11 +2507,13 @@ div.selected:hover {
         background-color: #2A3647;
         border-radius: 30px 0 0 30px;
         padding: 154px 0 0 46px;
+
         h1 {
             color: white;
             font-size: 61px;
             margin: 16px 0;
         }
+
         h2 {
             color: white;
             font-size: 27px;
@@ -2288,6 +2521,7 @@ div.selected:hover {
             margin: 0;
         }
     }
+
     .close-overlay-box {
         position: absolute;
         height: 32px;
@@ -2297,29 +2531,35 @@ div.selected:hover {
         display: flex;
         align-items: center;
         justify-content: center;
+
         img {
             height: 24px;
             width: 24px;
             object-fit: none;
         }
     }
+
     .overlay-box-body {
         .overlay-body-content {
             position: relative;
             top: 137px;
             left: 97px;
             display: flex;
+
             .edit-contact-form-buttons {
                 img {
                     filter: invert(87%) sepia(99%) saturate(0%) hue-rotate(68deg) brightness(103%) contrast(100%);
                 }
             }
+
             .add-contact-form-buttons {
                 .white-button {
                     width: 126px;
                 }
+
                 .blue-button {
                     width: 214px;
+
                     img {
                         filter: invert(87%) sepia(99%) saturate(0%) hue-rotate(68deg) brightness(103%) contrast(100%);
                     }
@@ -2337,10 +2577,12 @@ div.selected:hover {
         border-radius: 20px;
         z-index: 2048;
         display: flex;
+
         .edit-contact-form-box {
             margin-left: 48px;
             gap: 21px;
         }
+
         .overlay-box-head {
             height: calc(100% - 103px);
             width: calc(302px - 31px);
@@ -2349,11 +2591,13 @@ div.selected:hover {
             background-color: #2A3647;
             border-radius: 20px 0 0 20px;
             padding: 103px 0 0 31px;
+
             h1 {
                 color: white;
                 font-size: 40px;
                 margin: 11px 0;
             }
+
             h2 {
                 color: white;
                 font-size: 18px;
@@ -2361,32 +2605,39 @@ div.selected:hover {
                 margin: 0;
             }
         }
+
         .overlay-box-body {
             .overlay-body-content {
                 position: relative;
                 top: 91px;
                 left: 64px;
                 display: flex;
+
                 .add-contact-form-buttons {
                     button.white-button {
                         width: 100px;
                         height: 37px;
+
                         span {
                             font-size: 13px;
                         }
+
                         img {
                             margin-left: 7px;
                             height: 9px;
                             width: 9px;
                         }
                     }
+
                     button.blue-button {
                         width: 133px;
                         height: 37px;
                         margin-left: 17px;
+
                         span {
                             font-size: 13px;
                         }
+
                         img {
                             margin-left: 7px;
                             height: 9px;
@@ -2396,17 +2647,20 @@ div.selected:hover {
                 }
             }
         }
+
         .profile-badge-big-box {
             .profile-badge-big {
                 height: 76px;
                 width: 76px;
                 font-size: 31px;
+
                 img {
                     width: 43px;
                     height: 43px;
                 }
             }
         }
+
         .edit-contact-form-box {
             .input-with-img-wrapper {
                 .styled-input {
@@ -2416,6 +2670,7 @@ div.selected:hover {
                     padding: 1px 14px;
                     border-radius: 7px;
                 }
+
                 img {
                     right: 30px;
                     height: 16px;
@@ -2423,6 +2678,7 @@ div.selected:hover {
                 }
             }
         }
+
         .close-overlay-box {
             height: 22px;
             width: 22px;
@@ -2431,6 +2687,7 @@ div.selected:hover {
             display: flex;
             align-items: center;
             justify-content: center;
+
             img {
                 height: 16px;
                 width: 16px;
@@ -2444,11 +2701,13 @@ div.selected:hover {
     img[alt="logo"] {
         display: none;
     }
+
     .overlay-box {
         height: 760px;
         width: 396px;
         border-radius: 30px;
         flex-direction: column;
+
         .overlay-box-head {
             height: 351px;
             width: 396px;
@@ -2458,21 +2717,25 @@ div.selected:hover {
             flex-direction: column;
             align-items: flex-start;
             justify-content: center;
+
             h1 {
                 font-size: 47px;
                 margin: 11px 0;
                 margin-left: 24px;
             }
+
             h2 {
                 font-size: 24px;
                 margin-left: 24px;
             }
+
             img {
                 object-fit: none;
                 margin-left: 24px;
                 margin-top: 12px;
             }
         }
+
         .overlay-box-body {
             .overlay-body-content {
                 top: -60px;
@@ -2482,39 +2745,48 @@ div.selected:hover {
                 align-items: center;
                 justify-content: center;
                 gap: 32px;
+
                 .add-contact-form-buttons {
                     display: flex;
                     justify-content: center;
+
                     button {
                         height: 51px;
+
                         span {
                             font-size: 20px;
                         }
+
                         img {
                             margin-left: 10px;
                             height: 16px;
                             width: 16px;
                         }
                     }
+
                     .white-button {
                         display: none;
                     }
+
                     .blue-button {
                         width: 202px;
                     }
                 }
+
                 .edit-contact-form-buttons {
                     display: flex;
                     justify-content: center;
                 }
             }
         }
+
         .profile-badge-big-box {
             .profile-badge-big {
                 height: 114px;
                 width: 114px;
             }
         }
+
         .edit-contact-form-box {
             .input-with-img-wrapper {
                 .styled-input {
@@ -2525,6 +2797,7 @@ div.selected:hover {
                     padding: 1px 21px;
                     border-radius: 10px;
                 }
+
                 img {
                     right: 44px;
                     height: 24px;
@@ -2532,30 +2805,37 @@ div.selected:hover {
                 }
             }
         }
+
         .edit-contact-form-box {
             margin-left: 0;
             gap: 24px;
         }
+
         .close-overlay-box {
             img {
                 filter: invert(100%) sepia(35%) saturate(2%) hue-rotate(63deg) brightness(106%) contrast(100%);
             }
         }
     }
+
     button.white-button {
         width: 82px;
         height: 51px;
+
         span {
             font-size: 20px;
         }
     }
+
     button.blue-button {
         width: 99px;
         height: 51px;
         margin-left: 17px;
+
         span {
             font-size: 20px;
         }
+
         img {
             margin-left: 7px;
             height: 16px;
@@ -2568,68 +2848,82 @@ div.selected:hover {
     .single-task-field {
         height: 640px;
         width: 392px;
+
         .styled-input {
             width: 265px;
         }
+
         #add_task_description {
             textarea {
                 width: 265px;
             }
         }
+
         .add_task_prio {
             #prio-buttons {
                 label {
                     height: 40px;
                     width: 80px;
                     font-size: 12px;
+
                     img {
                         width: 10px;
                     }
                 }
             }
         }
+
         #selected_contacts {
             width: 307px;
         }
+
         #add_task_subtask {
             #selected_subtasks {
                 width: 307px;
             }
         }
+
         .input-wrapper {
             .input-box {
                 width: 307px;
             }
         }
     }
+
     .place-categorie-cross {
         margin-top: 24px;
         margin-right: 24px;
         margin-left: 24px;
         width: 348px;
     }
+
     .place-single-information {
         margin-top: 24px;
         margin-right: 24px;
         margin-left: 24px;
         width: 348px;
     }
+
     .place-delete-edit {
         margin-bottom: 24px;
         margin-right: 24px;
         margin-left: 24px;
         width: 348px;
     }
+
     h1.task-head-bord {
         font-size: 36px;
         line-height: 43.2px;
     }
+
     .descript {
         font-size: 16px;
     }
+
     .single-task-design {
         font-size: 16px;
     }
+
     .due-date-bord {
         font-size: 16px;
     }
@@ -2645,29 +2939,35 @@ div.selected:hover {
     .overlay-box {
         width: 300px;
         height: auto;
+
         .overlay-box-head {
             height: 260px;
             width: 300px;
+
             h1 {
                 font-size: 40px;
                 margin-top: 0;
             }
+
             h2 {
                 font-size: 18px;
             }
         }
+
         .overlay-box-body {
             .overlay-body-content {
                 top: -50px;
                 gap: 24px;
             }
         }
+
         .profile-badge-big-box {
             .profile-badge-big {
                 height: 94px;
                 width: 94px;
             }
         }
+
         .edit-contact-form-box {
             .input-with-img-wrapper {
                 .styled-input {
@@ -2675,69 +2975,84 @@ div.selected:hover {
                 }
             }
         }
+
         .edit-contact-form-box {
             margin-left: 0;
             gap: 24px;
         }
+
         .close-overlay-box {
             img {
                 filter: invert(100%) sepia(35%) saturate(2%) hue-rotate(63deg) brightness(106%) contrast(100%);
             }
         }
     }
+
     button.white-button {
         width: 82px;
         height: 51px;
+
         span {
             font-size: 20px;
         }
     }
+
     button.blue-button {
         width: 99px;
         height: 51px;
         margin-left: 17px;
+
         span {
             font-size: 20px;
         }
+
         img {
             margin-left: 7px;
             height: 16px;
             width: 16px;
         }
     }
+
     .single-task-field {
         height: 640px;
         width: 300px;
+
         .styled-input {
             width: 238px;
             padding: 1px 10px;
         }
+
         #add_task_description {
             textarea {
                 width: 248px;
                 padding: 1px 10px;
             }
         }
+
         .add_task_prio {
             #prio-buttons {
                 label {
                     height: 40px;
                     width: 80px;
                     font-size: 12px;
+
                     img {
                         width: 10px;
                     }
                 }
             }
         }
+
         #selected_contacts {
             width: 262px;
         }
+
         #add_task_subtask {
             #selected_subtasks {
                 width: 262px;
             }
         }
+
         main.edit-task {
             .add-task-form-section {
                 .input-wrapper {
@@ -2749,28 +3064,33 @@ div.selected:hover {
             }
         }
     }
+
     .bottom-section {
         justify-content: flex-end;
         margin: 50px 48px 32px 0;
     }
+
     .place-categorie-cross {
         margin-top: 24px;
         margin-right: 8px;
         margin-left: 8px;
         width: 266px;
     }
+
     .place-single-information {
         margin-top: 24px;
         margin-right: 8px;
         margin-left: 8px;
         width: 266px;
     }
+
     .place-delete-edit {
         margin-bottom: 24px;
         margin-right: 8px;
         margin-left: 8px;
         width: 266px;
     }
+
     h1.task-head-bord {
         font-size: 36px;
         line-height: 43.2px;
@@ -2781,12 +3101,15 @@ div.selected:hover {
     .search-task-tag {
         width: 286px;
     }
+
     .place-bord-buttons {
         width: 286px;
     }
+
     .place-bord-header-botton {
         width: 286px;
     }
+
     .single-task::-webkit-scrollbar {
         display: none;
         background-color: #A8A8A8;

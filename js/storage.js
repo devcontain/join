@@ -144,6 +144,6 @@ async function timeIfElse() {
         userTime();
     } else {
         guestTime();
-        sommary_name.innerHTML = "";
+        sommary_name.textContent = "";
     }
 }

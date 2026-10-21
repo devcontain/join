@@ -1,15 +1,42 @@
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function safeId(value) {
+    const id = Number(value);
+
+    if (!Number.isSafeInteger(id) || id < 0) {
+        throw new Error("Invalid ID");
+    }
+
+    return id;
+}
+
+function safeColor(value) {
+    return /^#[0-9a-fA-F]{6}$/.test(String(value))
+        ? String(value)
+        : "#0038FF";
+}
+
 /**
  * This function generates the HTML-code for the add-task-section.
  *
- * @param {array} array - This optinal variable is the section of the board-page that the task should be created for.
+ * @param {array} array - This optional variable is the section of the board-page that the task should be created for.
  */
 function fillAddTaskSection(array) {
     let page = document.getElementById("add_task_page");
-    html = "";
+    let html = "";
+
     html += /*html*/ `
         <main class="add-task">
             <h1>Add Task</h1>
-            <form class="add-task-form-section" onsubmit="addToTasks(${array});return false" autocomplete="off">
+            <form class="add-task-form-section" autocomplete="off">
                 <div class="input-wrapper">
                     <section class="input-box box-left">
                         <div id="add_task_title">
@@ -60,7 +87,6 @@ function fillAddTaskSection(array) {
                                     onchange="transferDate()">
                             </div>
                             <span class="required-field dnone">This field is required</span>
-
                         </div>
                         <div class="add_task_prio">
                             <h3>Prio</h3>
@@ -148,7 +174,16 @@ function fillAddTaskSection(array) {
             </div>
         </main>
     `;
+
     page.innerHTML = html;
+
+    const form = page.querySelector(".add-task-form-section");
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        addToTasks(array);
+    });
+
     initAddTask();
 }
 
@@ -159,12 +194,14 @@ function fillAddTaskSection(array) {
  * @returns - The generated HTML-code of the entry.
  */
 function generateCategoryHtml(category) {
-    html = "";
+    let html = "";
+
     html += /*html*/ `
-        <div class="drop-down-category-entry pointer" onmousedown="dontChangeFocus(event); selectTaskCategory(${category.id})">
-            <span class="category-name">${category.name}</span>
+        <div class="drop-down-category-entry pointer" onmousedown="dontChangeFocus(event); selectTaskCategory(${safeId(category.id)})">
+            <span class="category-name">${escapeHTML(category.name)}</span>
         </div>
     `;
+
     return html;
 }
 
@@ -176,16 +213,18 @@ function generateCategoryHtml(category) {
  * @returns - The HTML-Code of the entry.
  */
 function generateContactDropdownHtml(contact, contactdata) {
-    html = "";
+    let html = "";
+
     html += /*html*/ `
-        <div class="contact-list-entry pointer" onmousedown="dontChangeFocus(event); selectTaskContact(this, ${contact.id})">
+        <div class="contact-list-entry pointer" onmousedown="dontChangeFocus(event); selectTaskContact(this, ${safeId(contact.id)})">
             <div class="profile-info-box">
-                <span class="profile-badge" style="background-color: ${contact.color};">${contactdata.abbreviation}</span>
-                <span class="profile-fullname">${contactdata.fullname}</span>
+                <span class="profile-badge" style="background-color: ${safeColor(contact.color)};">${escapeHTML(contactdata.abbreviation)}</span>
+                <span class="profile-fullname">${escapeHTML(contactdata.fullname)}</span>
             </div>
             <img src="./assets/img/check_button_unchecked.svg" alt="">
         </div>
     `;
+
     return html;
 }
 
@@ -198,21 +237,23 @@ function generateContactDropdownHtml(contact, contactdata) {
  */
 function generateSubtaskHtml(name, id) {
     let html = "";
+
     html += /*html*/ `
-    <ul>
-        <li>${name}</li>
-    </ul>
-    <div id="edit-subtask-buttons" class="double-button-container" ondblclick="fstopPropagation(event)">
-        <a id="delete_subtask_button" onclick="editSubtask(this.parentElement.parentElement, ${id})">
-            <img src="./assets/img/edit.svg" alt="add">
-        </a>
-        <div class="separator-vertical"></div>
-        <a id="change_subtask_button"
-            onclick="deleteSubtask(this.parentElement.parentElement, ${id})">
-            <img src="./assets/img/delete.svg" alt="add">
-        </a>
-    </div>
-  `;
+        <ul>
+            <li>${escapeHTML(name)}</li>
+        </ul>
+        <div id="edit-subtask-buttons" class="double-button-container" ondblclick="fstopPropagation(event)">
+            <a id="delete_subtask_button" onclick="editSubtask(this.parentElement.parentElement, ${safeId(id)})">
+                <img src="./assets/img/edit.svg" alt="add">
+            </a>
+            <div class="separator-vertical"></div>
+            <a id="change_subtask_button"
+                onclick="deleteSubtask(this.parentElement.parentElement, ${safeId(id)})">
+                <img src="./assets/img/delete.svg" alt="add">
+            </a>
+        </div>
+    `;
+
     return html;
 }
 
@@ -222,9 +263,11 @@ function generateSubtaskHtml(name, id) {
  * @returns - The generated HTML-code of the subtask with wrapper.
  */
 function renderSubtask() {
-    let html = `<div class="selected-subtask-container pointer" ondblclick="editSubtask(this, ${currentSubtask.id})">`;
+    let html = `<div class="selected-subtask-container pointer" ondblclick="editSubtask(this, ${safeId(currentSubtask.id)})">`;
+
     html += generateSubtaskHtml(currentSubtask.name, currentSubtask.id);
     html += `</div>`;
+
     return html;
 }
 
@@ -236,20 +279,22 @@ function renderSubtask() {
  */
 function generateEditSubtaskHtml(id) {
     let html = "";
+
     html += /*html*/ `
-        <input type="text" id="subtask_edition_input_${id}">
+        <input type="text" id="subtask_edition_input_${safeId(id)}">
         <div id="subtask_edition_buttons" class="double-button-container">
             <a id="delete_subtask_button"
-                onclick="deleteSubtask(this.parentElement.parentElement, ${id})">
+                onclick="deleteSubtask(this.parentElement.parentElement, ${safeId(id)})">
                 <img src="./assets/img/delete.svg" alt="delete">
             </a>
             <div class="separator-vertical"></div>
             <a id="change_subtask_button"
-                onclick="confirmChangeSubtask(this.parentElement.parentElement, ${id})">
+                onclick="confirmChangeSubtask(this.parentElement.parentElement, ${safeId(id)})">
                 <img src="./assets/img/check.svg" alt="check">
             </a>
         </div>
     `;
+
     return html;
 }
 
@@ -262,7 +307,7 @@ function generateEditSubtaskHtml(id) {
 function generateSeparatorHtml(letter) {
     return /*html*/ `
         <div class="contact-list-separator-box">
-            <span id="separator-letter-span">${letter}</span>
+            <span id="separator-letter-span">${escapeHTML(letter)}</span>
             <div class="separator-horizontal"></div>
         </div>
     `;
@@ -277,19 +322,22 @@ function generateSeparatorHtml(letter) {
  */
 function generateContactHtml(contact, contactdata) {
     let html = "";
+    const email = String(contact.email ?? "");
+
     html += /*html*/ `
-        <div class="contact contact-list-entry pointer" onclick="openContact(${contact.id}, this)">
+        <div class="contact contact-list-entry pointer" onclick="openContact(${safeId(contact.id)}, this)">
             <div class="contact-info-box">
                 <div>
-                    <span class="profile-badge" style="background-color: ${contact.color};">${contactdata.abbreviation}</span>
+                    <span class="profile-badge" style="background-color: ${safeColor(contact.color)};">${escapeHTML(contactdata.abbreviation)}</span>
                 </div>
                 <div class="profile-info">
-                    <span class="profile-fullname">${contactdata.fullname}</span>
-                    <a class="profile-email disabled" href="mailto:${contact.email}">${contact.email}</a>
+                    <span class="profile-fullname">${escapeHTML(contactdata.fullname)}</span>
+                    <a class="profile-email disabled" href="mailto:${escapeHTML(email)}">${escapeHTML(email)}</a>
                 </div>
             </div>
         </div>
     `;
+
     return html;
 }
 
@@ -302,19 +350,24 @@ function generateContactHtml(contact, contactdata) {
  */
 function generateContactDetailBoxHtml(contact, contactdata) {
     let html = "";
+
+    const email = String(contact.email ?? "");
+    const phone = String(contact.phone ?? "");
+    const phoneHref = phone.replace(/[^\d+]/g, "");
+
     html += /*html*/ `
         <div class="contact-detail-box-head">
             <div class="profile-badge-big-box">
-                <span class="profile-badge-big" style="background-color: ${contact.color};">${contactdata.abbreviation}</span>
+                <span class="profile-badge-big" style="background-color: ${safeColor(contact.color)};">${escapeHTML(contactdata.abbreviation)}</span>
             </div>
             <div class="profile-name-with-buttons-box">
-                <div class="profile-name">${contactdata.fullname}</div>
+                <div class="profile-name">${escapeHTML(contactdata.fullname)}</div>
                 <div class="profile-buttons">
-                    <a onclick="openContactEdition(${contact.id}, '${contactdata.abbreviation}', '${contactdata.fullname}')">
+                    <a onclick="openContactEdition(${safeId(contact.id)})">
                         <img src="./assets/img/edit.svg" alt="edit contact">
                         <span>Edit</span>
                     </a>
-                    <a onclick="deleteContact(${contact.id})">
+                    <a onclick="deleteContact(${safeId(contact.id)})">
                         <img src="./assets/img/delete.svg" alt="delete contact">
                         <span>Delete</span>
                     </a>
@@ -326,24 +379,26 @@ function generateContactDetailBoxHtml(contact, contactdata) {
         </div>
         <div class="contact-detail-box-body">
             <h4>Email</h4>
-            <a class="profile-email" href="mailto:${contact.email}">${contact.email}</a>
+            <a class="profile-email" href="mailto:${escapeHTML(email)}">${escapeHTML(email)}</a>
             <h4>Phone</h4>
-            <a class="profile-phone" href="tel:${contact.phone}">${contact.phone}</a>
+            <a class="profile-phone" href="tel:${escapeHTML(phoneHref)}">${escapeHTML(phone)}</a>
         </div>
     `;
+
     return html;
 }
 
 /**
  * This function generates the HTML-code of the edit-contact-card of the board-page.
  *
- * @param {array} contact - This is the array of theselected contact.
+ * @param {array} contact - This is the array of the selected contact.
  * @param {string} abbreviation - This is the first letter of the first name plus the first letter of the last name.
  * @param {string} fullname - This is the full name of the contact.
  * @returns - The generated HTML-code of the edit-contact-section.
  */
 function generateEditContactHtml(contact, abbreviation, fullname) {
     let html = "";
+
     html += /*html*/ `
     <div class="overlay-box">
       <div class="overlay-box-head">
@@ -354,23 +409,23 @@ function generateEditContactHtml(contact, abbreviation, fullname) {
       <div class="overlay-box-body">
           <div class="overlay-body-content">
               <div class="profile-badge-big-box">
-                  <span class="profile-badge-big" style="background-color: ${contact.color}">${abbreviation}</span>
+                  <span class="profile-badge-big" style="background-color: ${safeColor(contact.color)}">${escapeHTML(abbreviation)}</span>
               </div>
-              <form class="edit-contact-form-box" onsubmit="saveEditedContact(${contact.id});return false" autocomplete="off">
+              <form class="edit-contact-form-box" onsubmit="saveEditedContact(${safeId(contact.id)});return false" autocomplete="off">
                   <div class="input-with-img-wrapper">
-                      <input type="text" value="${fullname}" pattern="[A-Za-zäöüÄÖÜ]+([ ][A-Za-zäöüÄÖÜ]+)+" class="styled-input focus-blue edit-contact-input" id="edit_contact_name" oninvalid="this.setCustomValidity('Enter your full name here: Firstname (Secondname) Lastname')" oninput="this.setCustomValidity('')" maxlength="35">
+                      <input type="text" value="${escapeHTML(fullname)}" pattern="[A-Za-zäöüÄÖÜ]+([ ][A-Za-zäöüÄÖÜ]+)+" class="styled-input focus-blue edit-contact-input" id="edit_contact_name" oninvalid="this.setCustomValidity('Enter your full name here: Firstname (Secondname) Lastname')" oninput="this.setCustomValidity('')" maxlength="35">
                       <img src="./assets/img/person.svg" alt="person" />
                   </div>
                   <div class="input-with-img-wrapper">
-                      <input type="email" value="${contact.email}" class="styled-input focus-blue edit-contact-input" id="edit_contact_email" maxlength="35">
+                      <input type="email" value="${escapeHTML(contact.email)}" class="styled-input focus-blue edit-contact-input" id="edit_contact_email" maxlength="35">
                       <img src="./assets/img/mail.svg" alt="mail" />
                   </div>
                   <div class="input-with-img-wrapper">
-                      <input type="tel" value="${contact.phone}" class="styled-input focus-blue edit-contact-input" id="edit_contact_phone" maxlength="35">
+                      <input type="tel" value="${escapeHTML(contact.phone)}" class="styled-input focus-blue edit-contact-input" id="edit_contact_phone" maxlength="35">
                       <img src="./assets/img/call.svg" alt="call" />
                   </div>
                   <div class="edit-contact-form-buttons">
-                      <button type="button" class="white-button" onclick="deleteContact(${contact.id})">
+                      <button type="button" class="white-button" onclick="deleteContact(${safeId(contact.id)})">
                           <span>Delete</span>
                       </button>
                       <button type="submit" id="edit-contact-save-button" class="blue-button">
@@ -382,10 +437,11 @@ function generateEditContactHtml(contact, abbreviation, fullname) {
           </div>
       </div>
       <a class="close-overlay-box" onclick="closeOverlay()">
-      <img src="./assets/img/cross.svg" alt="close" />
-  </a>
+          <img src="./assets/img/cross.svg" alt="close" />
+      </a>
     </div>
-  `;
+    `;
+
     return html;
 }
 
@@ -397,50 +453,52 @@ function generateEditContactHtml(contact, abbreviation, fullname) {
  */
 function generateAddContactHtml(color) {
     let html = "";
+
     html += /*html*/ `
-  <div class="overlay-box">
-    <div class="overlay-box-head">
-        <img src="./assets/img/join_logo.svg" alt="logo" />
-        <h1>Add contact</h1>
-        <h2>Tasks are better with a team!</h2>
-        <img src="./assets/img/line_horizontal.svg" alt="line" />
-    </div>
-    <div class="overlay-box-body">
-        <a class="close-overlay-box" onclick="closeOverlay()">
-            <img src="./assets/img/cross.svg" alt="close" />
-        </a>
-        <div class="overlay-body-content">
-            <div class="profile-badge-big-box">
-                <span class="profile-badge-big" style="background-color: ${color}"><img src="./assets/img/person_big.svg" alt="person"></span>
+    <div class="overlay-box">
+        <div class="overlay-box-head">
+            <img src="./assets/img/join_logo.svg" alt="logo" />
+            <h1>Add contact</h1>
+            <h2>Tasks are better with a team!</h2>
+            <img src="./assets/img/line_horizontal.svg" alt="line" />
+        </div>
+        <div class="overlay-box-body">
+            <a class="close-overlay-box" onclick="closeOverlay()">
+                <img src="./assets/img/cross.svg" alt="close" />
+            </a>
+            <div class="overlay-body-content">
+                <div class="profile-badge-big-box">
+                    <span class="profile-badge-big" style="background-color: ${safeColor(color)}"><img src="./assets/img/person_big.svg" alt="person"></span>
+                </div>
+                <form name="addContact" class="edit-contact-form-box" onsubmit="saveNewContact();return false" autocomplete="off">
+                    <div class="input-with-img-wrapper">
+                        <input required placeholder="Name" type="text" pattern="[A-Za-zäöüÄÖÜ]+([ ][A-Za-zäöüÄÖÜ]+)+" class="styled-input focus-blue edit-contact-input" id="add_contact_name" oninvalid="this.setCustomValidity('Enter your full name here: Firstname (Secondname) Lastname')" oninput="this.setCustomValidity('')" maxlength="35">
+                        <img src="./assets/img/person.svg" alt="person" />
+                    </div>
+                    <div class="input-with-img-wrapper">
+                        <input required placeholder="Email" type="email" class="styled-input focus-blue edit-contact-input" id="add_contact_email" maxlength="35">
+                        <img src="./assets/img/mail.svg" alt="mail" />
+                    </div>
+                    <div class="input-with-img-wrapper">
+                        <input required placeholder="Phone" type="tel" class="styled-input focus-blue edit-contact-input" id="add_contact_phone" maxlength="35">
+                        <img src="./assets/img/call.svg" alt="call" />
+                    </div>
+                    <input type="text" class="dnone" value="${safeColor(color)}" id="add_contact_color">
+                    <div class="add-contact-form-buttons">
+                        <button type="button" class="white-button" onclick="closeOverlay()">
+                            <span>Cancel</span>
+                            <img src="./assets/img/cross.svg" alt="cross" />
+                        </button>
+                        <button type="submit" id="add-contact-save-button" class="blue-button">
+                            <span>Create contact</span>
+                            <img src="./assets/img/check.svg" alt="check" />
+                        </button>
+                    </div>
+                </form>
             </div>
-            <form name="addContact" class="edit-contact-form-box" onsubmit="saveNewContact();return false" autocomplete="off">
-                <div class="input-with-img-wrapper">
-                    <input required placeholder="Name" type="text" pattern="[A-Za-zäöüÄÖÜ]+([ ][A-Za-zäöüÄÖÜ]+)+" class="styled-input focus-blue edit-contact-input" id="add_contact_name" oninvalid="this.setCustomValidity('Enter your full name here: Firstname (Secondname) Lastname')" oninput="this.setCustomValidity('')" maxlength="35">
-                    <img src="./assets/img/person.svg" alt="person" />
-                </div>
-                <div class="input-with-img-wrapper">
-                    <input required placeholder="Email" type="email" class="styled-input focus-blue edit-contact-input" id="add_contact_email" maxlength="35">
-                    <img src="./assets/img/mail.svg" alt="mail" />
-                </div>
-                <div class="input-with-img-wrapper">
-                    <input required placeholder="Phone" type="tel" class="styled-input focus-blue edit-contact-input" id="add_contact_phone" maxlength="35">
-                    <img src="./assets/img/call.svg" alt="call" />
-                </div>
-                <input type="text" class="dnone" value="${color}" id="add_contact_color">
-                <div class="add-contact-form-buttons">
-                    <button type="button" class="white-button" onclick="closeOverlay()">
-                        <span>Cancel</span>
-                        <img src="./assets/img/cross.svg" alt="cross" />
-                    </button>
-                    <button type="submit" id="add-contact-save-button" class="blue-button">
-                        <span>Create contact</span>
-                        <img src="./assets/img/check.svg" alt="check" />
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
-  </div>
-`;
+    `;
+
     return html;
 }

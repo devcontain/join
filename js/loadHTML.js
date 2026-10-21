@@ -1,25 +1,82 @@
 
 /**
+ * Escapes dynamic values before inserting them into HTML.
+ */
+function templateEscapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+/**
+ * Validates task indices used in HTML event handlers.
+ */
+function templateSafeIndex(value) {
+    const index = Number(value);
+
+    if (!Number.isSafeInteger(index) || index < 0) {
+        throw new Error("Invalid task index");
+    }
+
+    return index;
+}
+
+/**
+ * Accepts only known board section keys.
+ */
+function templateSafeBoardKey(value) {
+    const allowed = ["todo", "tasksinprogress", "awaitingfeedback", "done"];
+
+    if (!allowed.includes(value)) {
+        throw new Error("Invalid board section");
+    }
+
+    return value;
+}
+
+/**
+ * Restricts checkbox image paths to known application assets.
+ */
+function templateSafeCheckboxImage(value) {
+    return value === "./assets/img/bord_check.png"
+        ? "./assets/img/bord_check.png"
+        : "./assets/img/bord_uncheck.png";
+}
+
+/**
  * start at onload to load all tepmlates to every site
  */
 async function init() {
     await includeHTML();
 }
 
-/**
- * function fetches HTML content from external files based on elements with a specific attribute,
- * then inserts the content into those elements on a webpage asynchronously
- */
 async function includeHTML() {
-    let includeElements = document.querySelectorAll("[w3-include-html]");
-    for (let i = 0; i < includeElements.length; i++) {
-        const element = includeElements[i];
-        file = element.getAttribute("w3-include-html"); // "includes/header.html"
-        let resp = await fetch(file);
-        if (resp.ok) {
-            element.innerHTML = await resp.text();
+    const allowedFiles = [
+        "./assets/templates/desktop_template.html",
+        "./assets/templates/desktop_template_register.html"
+    ];
+
+    const includeElements = document.querySelectorAll("[w3-include-html]");
+
+    for (const element of includeElements) {
+        const file = element.getAttribute("w3-include-html");
+
+        if (!allowedFiles.includes(file)) {
+            console.error("Blocked HTML include:", file);
+            element.textContent = "Page not found";
+            continue;
+        }
+
+        const response = await fetch(file);
+
+        if (response.ok) {
+            element.innerHTML = await response.text();
         } else {
-            element.innerHTML = "Page not found";
+            element.textContent = "Page not found";
         }
     }
 }
@@ -80,8 +137,8 @@ function emptyTaskFieldDone() {
  */
 function userTaskHtml() {
     return `
-          <p class="user-story">user story</p>
-      `;
+        <p class="user-story">user story</p>
+    `;
 }
 
 /**
@@ -90,8 +147,8 @@ function userTaskHtml() {
  */
 function technicalTaskHtml() {
     return `
-          <p class="technical-task">technical task</p>
-      `;
+        <p class="technical-task">technical task</p>
+    `;
 }
 
 /**
@@ -110,7 +167,7 @@ function nothingFound() {
  */
 function urgentPrioHtml() {
     return `
-        <img class="low-image" src="./assets/img/urgent.png"></img>
+        <img class="low-image" src="./assets/img/urgent.png">
     `;
 }
 
@@ -120,7 +177,7 @@ function urgentPrioHtml() {
  */
 function lowPrioHtml() {
     return `
-        <img class="low-image" src="./assets/img/low.png"></img>
+        <img class="low-image" src="./assets/img/low.png">
     `;
 }
 
@@ -130,7 +187,7 @@ function lowPrioHtml() {
  */
 function mediumPrioHtml() {
     return `
-        <img class="low-image" src="./assets/img/medium_two.png"></img>
+        <img class="low-image" src="./assets/img/medium_two.png">
     `;
 }
 
@@ -141,7 +198,7 @@ function mediumPrioHtml() {
 function urgentPrioHtmlOpenTask() {
     return `
         <span>Urgent</span>
-        <img class="low-image" src="./assets/img/urgent.png"></img>
+        <img class="low-image" src="./assets/img/urgent.png">
     `;
 }
 
@@ -152,7 +209,7 @@ function urgentPrioHtmlOpenTask() {
 function lowPrioHtmlOpenTask() {
     return `
         <span>Low</span>
-        <img class="low-image" src="./assets/img/low.png"></img>
+        <img class="low-image" src="./assets/img/low.png">
     `;
 }
 
@@ -163,7 +220,7 @@ function lowPrioHtmlOpenTask() {
 function mediumPrioHtmlOpenTask() {
     return `
         <span>Medium</span>
-        <img class="low-image" src="./assets/img/medium_two.png"></img>
+        <img class="low-image" src="./assets/img/medium_two.png">
     `;
 }
 
@@ -173,9 +230,14 @@ function mediumPrioHtmlOpenTask() {
  * @returns - the code as html for the progressbar
  */
 function createProgressBar(percent) {
+    const numericPercent = Number(percent);
+    const safePercent = Number.isFinite(numericPercent)
+        ? Math.max(0, Math.min(100, numericPercent))
+        : 0;
+
     return `
-        <div class="progress-bar" role="progressbar" aria-label="Example with label" aria-valuenow="25">
-            <div class="progressbar" id="progressbar" style ="width: ${percent}%"</div>
+        <div class="progress-bar" role="progressbar" aria-label="Task progress" aria-valuenow="${safePercent}">
+            <div class="progressbar" id="progressbar" style="width: ${safePercent}%"></div>
         </div>
     `;
 }
@@ -186,8 +248,8 @@ function createProgressBar(percent) {
  */
 function hoverHtml() {
     return `
-        <div ondragover="this.style.background = '#F4F4F4'; this.style.borderStyle = 'dashed';" 
-            ondragleave="this.style.background = '#f6f7f8'; this.style.borderStyle = 'none';" 
+        <div ondragover="this.style.background = '#F4F4F4'; this.style.borderStyle = 'dashed';"
+            ondragleave="this.style.background = '#f6f7f8'; this.style.borderStyle = 'none';"
             class="box-hover">
         </div>
     `;
@@ -200,8 +262,14 @@ function hoverHtml() {
  * @returns - the code as html for the subtasks in numbers
  */
 function subtaskProgressbarHtml(subtasklenght, selectedCheckboxCount) {
+    const total = Number(subtasklenght);
+    const checked = Number(selectedCheckboxCount);
+
+    const safeTotal = Number.isSafeInteger(total) && total >= 0 ? total : 0;
+    const safeChecked = Number.isSafeInteger(checked) && checked >= 0 ? checked - 1 : 0;
+
     return `
-        <p class="subtasktxt">${selectedCheckboxCount - 1}/${subtasklenght}Subtasks</p>
+        <p class="subtasktxt">${safeChecked}/${safeTotal}Subtasks</p>
     `;
 }
 
@@ -230,43 +298,51 @@ function moveTaskMenue() {
 }
 
 /**
- * enerates HTML markup for a single subtask element, including a checkbox, an image label, and a text label. It accepts parameters for the subtasks
- * @param {number} index - the number of the current subtasks
- * @param {boolean} isChecked - true or false of checked subtask
- * @param {string} subtask - named subtasks
- * @param {string} imgSrc - image for the checked / and unchecked checkbox
+ * generates HTML markup for a single subtask element.
+ * @param {number} index - the number of the current subtask
+ * @param {boolean} isChecked - checked status
+ * @param {string} subtask - subtask name
+ * @param {string} imgSrc - checkbox image
  * @returns - the code as html for subtasks
  */
 function generateSubsHtml(index, isChecked, subtask, imgSrc) {
+    const safeIndex = templateSafeIndex(index);
+    const checked = isChecked === "checked" || isChecked === true ? "checked" : "";
+    const safeImage = templateSafeCheckboxImage(imgSrc);
+
     let subHtml = "";
-    subHtml += `<li><input class="check-bord" id="toggle_button${index}" type="checkbox" onchange="updateSelectedCheckboxes(${index}, this.checked)" ${isChecked}>`;
-    subHtml += `<label for="toggle_button${index}"><img id="subtask${index}" src="${imgSrc}"></label>`;
-    subHtml += `<label class="single-subtask-element" for="subtask${index}">${subtask}</label></li>`;
+
+    subHtml += `<li><input class="check-bord" id="toggle_button${safeIndex}" type="checkbox" onchange="updateSelectedCheckboxes(${safeIndex}, this.checked)" ${checked}>`;
+    subHtml += `<label for="toggle_button${safeIndex}"><img id="subtask${safeIndex}" src="${safeImage}"></label>`;
+    subHtml += `<label class="single-subtask-element" for="subtask${safeIndex}">${templateEscapeHTML(subtask)}</label></li>`;
+
     return subHtml;
 }
 
 /**
- * generates HTML markup for a todo task container with dynamic content based on provided parameters
- * @param {array} choosencategory - representing task catgeroy  
- * @param {array} title - representing task title
- * @param {array} description - representing task description
- * @param {number} i - current task
- * @param {string} subtaskstodo - representing task subtasks html as progressbar
- * @param {array} contactstodo - representing task contacts
- * @param {array} priority - representing task priority
- * @param {string} choosensubs - representing task check / unched subtasks and all subtasks as html
- * @returns - a formatted string with dynamic content based on the provided parameters
+ * generates HTML markup for a todo task container with dynamic content.
+ * @param {array} choosencategory - task category HTML
+ * @param {string} title - task title
+ * @param {string} description - task description
+ * @param {number} i - current task index
+ * @param {string} subtaskstodo - progress bar HTML
+ * @param {string} contactstodo - contact badge HTML
+ * @param {string} priority - priority HTML
+ * @param {string} choosensubs - subtask progress text
+ * @returns - formatted HTML
  */
 function todoTaskHtml(choosencategory, title, description, i, subtaskstodo, contactstodo, priority, choosensubs) {
+    const index = templateSafeIndex(i);
+
     return `
-        <div id="${i}" class="todo-task-container" onclick="openBordTask(${i}, this)" draggable="true" ondragstart="drag(${i}, this)">
+        <div id="${index}" class="todo-task-container" onclick="openBordTask(${index}, this)" draggable="true" ondragstart="drag(${index}, this)">
             <div class="mobile-move-place" onclick="noCloseContent(event)">
                 <div class="collect-category">${choosencategory}</div>
-                <button class="move-mobile" onclick="openMoveMenue(${i}, this)">move</button>
+                <button class="move-mobile" onclick="openMoveMenue(${index}, this)">move</button>
             </div>
-            <h3 class="bord-title">${title}</h3>    
+            <h3 class="bord-title">${templateEscapeHTML(title)}</h3>
             <div class="bord-descript-max-height">
-                <span class="bord-descript">${description}</span>
+                <span class="bord-descript">${templateEscapeHTML(description)}</span>
             </div>
             <div class="place-task-progress">
                 <div class="collect-subtask">${subtaskstodo}</div>
@@ -285,19 +361,22 @@ function todoTaskHtml(choosencategory, title, description, i, subtaskstodo, cont
 }
 
 /**
- * markup for a full single task card with dynamic content based on provided parameters
- * @param {array} choosencategory - representing task category
- * @param {array} title - representing task title
- * @param {array} description - representing task descript
- * @param {number} i - current task
- * @param {array} priotodo - representing task priority
- * @param {array} date - representing task date
- * @param {string} subtaskstodo - representing task subtasks
- * @param {string} contacts - representing task contacts
- * @param {array} key - representing current task array
- * @returns - a formatted string with dynamic content based on the provided parameters
+ * markup for a full single task card with dynamic content.
+ * @param {array} choosencategory - task category HTML
+ * @param {string} title - task title
+ * @param {string} description - task description
+ * @param {number} i - current task index
+ * @param {array} priotodo - priority HTML
+ * @param {string} date - task date
+ * @param {string} subtaskstodo - subtask HTML
+ * @param {string} contacts - contact HTML
+ * @param {string} key - current board section
+ * @returns - formatted HTML
  */
 function fullTaskHtml(choosencategory, title, description, i, priotodo, date, subtaskstodo, contacts, key) {
+    const index = templateSafeIndex(i);
+    const boardKey = templateSafeBoardKey(key);
+
     return `
         <div class="single-task-field" onclick="noCloseContent(event)">
             <div class="place-categorie-cross">
@@ -305,11 +384,11 @@ function fullTaskHtml(choosencategory, title, description, i, priotodo, date, su
                 <img onclick="closeCard()" class="single-task-close" src="./assets/img/close.png">
             </div>
             <div class="place-single-information">
-                <h1 class="task-head-bord">${title}</h1>
-                <div class="descript">${description}</div>
+                <h1 class="task-head-bord">${templateEscapeHTML(title)}</h1>
+                <div class="descript">${templateEscapeHTML(description)}</div>
                 <div class="place-due-date-bord">
                     <span class="single-task-design">Due date:&nbsp;</span>
-                    <span class="due-date-bord">${date}</span>
+                    <span class="due-date-bord">${templateEscapeHTML(date)}</span>
                 </div>
                 <div class="place-priority-bord single-task-design">
                     <span>Priority:&nbsp;</span>
@@ -327,35 +406,39 @@ function fullTaskHtml(choosencategory, title, description, i, priotodo, date, su
                     </div>
                 </div>
                 <div class="place-delete-edit">
-                    <div onclick="deleteSingleTask(${i})" class="delete-place">
+                    <div onclick="deleteSingleTask(${index})" class="delete-place">
                         <img class="delete" src="./assets/img/delete.png">
                         <span>Delete</span>
                     </div>
                     <div class="one-px-line"></div>
-                <div onclick="editSingleTask(${i}, '${key}')" class="edit-place">
-                    <img class="edit" src="./assets/img/edit.png">
-                    <span>Edit</span>
+                    <div onclick="editSingleTask(${index}, '${boardKey}')" class="edit-place">
+                        <img class="edit" src="./assets/img/edit.png">
+                        <span>Edit</span>
+                    </div>
                 </div>
             </div>
         </div>
-      `;
+    `;
 }
 
 /**
- * markup for a full single task card with dynamic content based on provided parameters, to edit the single choosen task
- * @param {array} titletodo - representing task title
- * @param {array} descriptiontodo - representing task description
- * @param {array} i - current task
- * @param {array} choosenpriority - representing task description
- * @param {array} datetodo - representing task date
- * @param {array} key - representing current task array
- * @returns - a formatted string with dynamic content based on the provided parameters
+ * markup for editing a single selected task.
+ * @param {string} titletodo - task title
+ * @param {string} descriptiontodo - task description
+ * @param {number} i - current task index
+ * @param {string} choosenpriority - priority HTML
+ * @param {string} datetodo - task date
+ * @param {string} key - current board section
+ * @returns - formatted HTML
  */
 function editTaskHtml(titletodo, descriptiontodo, i, choosenpriority, datetodo, key) {
+    const index = templateSafeIndex(i);
+    const boardKey = templateSafeBoardKey(key);
+
     return `
         <div class="single-task-field" onclick="noCloseContent(event)">
             <main class="edit-task">
-                <form class="add-task-form-section" onsubmit="applyChangesToTask(${i}, '${key}');return false"  autocomplete="off">
+                <form class="add-task-form-section" onsubmit="applyChangesToTask(${index}, '${boardKey}');return false" autocomplete="off">
                     <div class="input-wrapper scroll-wrapper">
                         <section class="input-box">
                             <div id="add_task_title">
@@ -364,14 +447,14 @@ function editTaskHtml(titletodo, descriptiontodo, i, choosenpriority, datetodo, 
                                     <h3 style="color: #FF8190;">*</h3>
                                 </div>
                                 <input class="styled-input focus-blue" placeholder="Enter a title" required type="text"
-                                    id="add_task_title_input" maxlength="35" value="${titletodo}">
+                                    id="add_task_title_input" maxlength="35" value="${templateEscapeHTML(titletodo)}">
                             </div>
                             <span class="required-field dnone">This field is required</span>
                             <div id="add_task_description">
                                 <h3>Description</h3>
                                 <div class="textarea-wrapper">
                                     <textarea class="focus-blue" placeholder="Enter a Description" name="add_task_description"
-                                        id="add_task_description_textarea" spellcheck="false">${descriptiontodo}</textarea>
+                                        id="add_task_description_textarea" spellcheck="false">${templateEscapeHTML(descriptiontodo)}</textarea>
                                 </div>
                             </div>
                         </section>
@@ -383,7 +466,7 @@ function editTaskHtml(titletodo, descriptiontodo, i, choosenpriority, datetodo, 
                                 </div>
                                 <div class="input-with-button-wrapper">
                                     <input id="input_with_button_date" class="styled-input focus-blue" placeholder="dd/mm/yyyy"
-                                        type="text" required pattern="([0-9]{2}\/[0-9]{2}\/[0-9]{4})" value="${datetodo}">
+                                        type="text" required pattern="([0-9]{2}\/[0-9]{2}\/[0-9]{4})" value="${templateEscapeHTML(datetodo)}">
                                     <input id="input_calendar" class="calendar-input" type="date" value=""
                                         onchange="transferDate()" min='1899-01-01'>
                                 </div>
@@ -419,8 +502,8 @@ function editTaskHtml(titletodo, descriptiontodo, i, choosenpriority, datetodo, 
                                     <a onclick="setFocusOnElement('input_with_button_assigned_to', event)">
                                         <img id="drop_down_assigned_to_arrow" src="./assets/img/arrow_drop_down.png" alt="add">
                                     </a>
-                                    </div>
-                                    <div class="drop-down dnone custom-scrollbar" id="drop_down_assigned_to"></div>
+                                </div>
+                                <div class="drop-down dnone custom-scrollbar" id="drop_down_assigned_to"></div>
                                 <div id="selected_contacts"></div>
                             </div>
                             <div class="edit-place-user-single-card">
@@ -460,6 +543,6 @@ function editTaskHtml(titletodo, descriptiontodo, i, choosenpriority, datetodo, 
                     </section>
                 </form>
             </main>
-        </div>    
+        </div>
     `;
 }

@@ -1,3 +1,4 @@
+
 let colors = ["#FF7A00", "#FF5EB3", "#6E52FF", "#9327FF", "#00BEE8", "#1FD7C1", "#FF745E", "#FFA35E", "#FC71FF", "#FFC701", "#0038FF", "#C3FF2B", "#FFE62B", "#FF4646", "#FFBB2B"];
 window.onresize = switchViewOnSize;
 
@@ -22,17 +23,17 @@ async function sortContacts() {
  */
 function renderContacts() {
     const list = document.getElementById("contact-list");
-    list.innerHTML = "";
+    list.replaceChildren();
     let prevLetter = "";
     for (let i = 0; i < users[loaduser].contacts.length; i++) {
         const contact = users[loaduser].contacts[i];
         if (!contact.firstname) continue;
         const contactdata = generateContactData(contact);
         if (contactdata.firstLetter !== prevLetter) {
-            list.innerHTML += generateSeparatorHtml(contactdata.firstLetter);
+            list.insertAdjacentHTML("beforeend", generateSeparatorHtml(contactdata.firstLetter));
             prevLetter = contactdata.firstLetter;
         }
-        list.innerHTML += generateContactHtml(contact, contactdata);
+        list.insertAdjacentHTML("beforeend", generateContactHtml(contact, contactdata));
     }
 }
 
@@ -58,11 +59,11 @@ function generateContactData(contact) {
  */
 function openContact(id, card) {
     let contentbox = document.getElementById("contact-detail-box");
-    contentbox.innerHTML = "";
+    contentbox.replaceChildren();
     unselectSelected();
     const contact = users[loaduser].contacts.find((element) => element.id === id);
     const contactdata = generateContactData(contact);
-    contentbox.innerHTML += generateContactDetailBoxHtml(contact, contactdata);
+    contentbox.insertAdjacentHTML("beforeend", generateContactDetailBoxHtml(contact, contactdata));
     if (card && document.documentElement.clientWidth > 850) {
         card.classList.add("selected");
         card.querySelector(".profile-fullname").classList.add("selected");
@@ -156,18 +157,21 @@ async function deleteContact(id) {
     clearContactDetails();
 }
 
-/**
- * This function loads the contact-edition-card and displays the overlay with the card.
- *
- * @param {number} id - This is the unique-id of the contact that is to be edited.
- * @param {string} abbreviation - This is the first letter of the first name and the first letter of the last name of the contact.
- * @param {string} fullname - This is the full name of the contact.
- */
-function openContactEdition(id, abbreviation, fullname) {
+function openContactEdition(id) {
     let overlay = document.querySelector(".overlay");
     let contact = users[loaduser].contacts.find((element) => element.id === id);
-    overlay.innerHTML = "";
-    overlay.innerHTML += generateEditContactHtml(contact, abbreviation, fullname);
+    let contactdata = generateContactData(contact);
+
+    overlay.replaceChildren();
+    overlay.insertAdjacentHTML(
+        "beforeend",
+        generateEditContactHtml(
+            contact,
+            contactdata.abbreviation,
+            contactdata.fullname
+        )
+    );
+
     overlay.classList.remove("dnone");
 }
 
@@ -182,7 +186,7 @@ function closeOverlay() {
  * This function empties the contact-detail-area.
  */
 function clearContactDetails() {
-    document.getElementById("contact-detail-box").innerHTML = "";
+    document.getElementById("contact-detail-box").replaceChildren();
 }
 
 /**
@@ -252,8 +256,8 @@ async function saveToServer() {
 function openContactAdding() {
     let overlay = document.querySelector(".overlay");
     let color = colors[Math.floor(Math.random() * colors.length)];
-    overlay.innerHTML = "";
-    overlay.innerHTML += generateAddContactHtml(color);
+    overlay.replaceChildren();
+    overlay.insertAdjacentHTML("beforeend", generateAddContactHtml(color));
     overlay.classList.remove("dnone");
 }
 

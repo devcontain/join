@@ -3,6 +3,23 @@ let currenttask = 0;
 let currentdragged;
 let currentdraggedarray;
 let task;
+
+function boardEscapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function boardSafeColor(value) {
+    return /^#[0-9a-fA-F]{6}$/.test(String(value))
+        ? String(value)
+        : "#0038FF";
+}
+
 /**
  * start functions onload, render tasks, empty fields informations and empty Box hover
  */
@@ -150,7 +167,7 @@ function renderTasks() {
     const taskSections = ["to_do_place", "in_progress_place", "await_feedback_place", "done_place"];
     taskSections.forEach((sectionId) => {
         let sectionElement = document.getElementById(sectionId);
-        sectionElement.innerHTML = ``;
+        sectionElement.replaceChildren();
         let tasks = sectionId === "to_do_place" ? users[loaduser]["todo"] : sectionId === "in_progress_place" ? users[loaduser]["tasksinprogress"] : sectionId === "await_feedback_place" ? users[loaduser]["awaitingfeedback"] : sectionId === "done_place" ? users[loaduser]["done"] : [];
         tasks.forEach((task, index) => {
             showTaskHtml(task, index, sectionId);
@@ -213,48 +230,44 @@ function selectCategory(category) {
     return category == "Technical Task" ? technicalTaskHtml() : userTaskHtml();
 }
 
-/**
- * creates HTML for displaying contacts and return styled HTML
- * iterates through the array of contacts, generates a profile badge for each,
- * only contacts with a non-empty first name are processed
- * @param {array} contactstodo - representing task contacts  
- * @returns - returns HTML content
- */
 function selectContacts(contactstodo) {
     let contacthtml = "";
+
     for (let s = 0; s < contactstodo.length; s++) {
         const contact = contactstodo[s];
+
         if (!contact.firstname) continue;
+
         const abbreviation = contact.firstname.charAt(0) + contact.lastname.charAt(0);
+
         contacthtml += `
             <div class="contact-name-place">
-                <span class="profile-badge" style="background-color: ${contact.color};">${abbreviation}</span>
+                <span class="profile-badge" style="background-color: ${boardSafeColor(contact.color)};">${boardEscapeHTML(abbreviation)}</span>
             </div>`;
     }
+
     return contacthtml;
 }
 
-/**
- * creates HTML for displaying contacts and return styled HTML with names
- * iterates through the array of contacts, generates a profile badge for each,
- * only contacts with a non-empty first name are processed
- * @param {array} contactstodo - representing task contacts and returns HTML content
- * @returns - that in an html
- */
 function selectContactsOpenTask(contactstodo) {
     let contacthtml = "";
+
     for (let s = 0; s < contactstodo.length; s++) {
         const contact = contactstodo[s];
+
         if (!contact.firstname) continue;
-        const selectfirstnamecon = contact["firstname"];
-        const selectlastnamecon = contact["lastname"];
+
+        const selectfirstnamecon = contact.firstname;
+        const selectlastnamecon = contact.lastname;
         const abbreviation = contact.firstname.charAt(0) + contact.lastname.charAt(0);
+
         contacthtml += `
             <div class="contact-name-place">
-                <span class="profile-badge" style="background-color: ${contact.color};">${abbreviation}</span>
-                <span>${selectfirstnamecon}&nbsp;${selectlastnamecon}</span>
+                <span class="profile-badge" style="background-color: ${boardSafeColor(contact.color)};">${boardEscapeHTML(abbreviation)}</span>
+                <span>${boardEscapeHTML(selectfirstnamecon)}&nbsp;${boardEscapeHTML(selectlastnamecon)}</span>
             </div>`;
     }
+
     return contacthtml;
 }
 
@@ -561,7 +574,7 @@ function renderResults(filteredResults, todoplace, inprogressplace, awaitfeedbac
  * @param {*} place - placement for tasks
  */
 function renderResultsCategory(results, place) {
-    place.innerHTML = "";
+    place.replaceChildren();
     results.length <= 0 ? (place.innerHTML = nothingFound()) : results.forEach((item, index) => showHtml(item, place, index));
 }
 

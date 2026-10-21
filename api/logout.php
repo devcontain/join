@@ -11,7 +11,22 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') {
+    http_response_code(403);
+    echo json_encode(['error' => 'HTTPS required']);
+    exit;
+}
+
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+if ($origin !== 'https://join.devcontain.de') {
+    http_response_code(403);
+    echo json_encode(['error' => 'Origin not allowed']);
+    exit;
+}
+
 ini_set('session.use_strict_mode', '1');
+ini_set('session.use_only_cookies', '1');
 
 session_set_cookie_params([
     'lifetime' => 0,
@@ -22,14 +37,6 @@ session_set_cookie_params([
 ]);
 
 session_start();
-
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-
-if ($origin !== 'https://join.devcontain.de') {
-    http_response_code(403);
-    echo json_encode(['error' => 'Origin not allowed']);
-    exit;
-}
 
 $_SESSION = [];
 
