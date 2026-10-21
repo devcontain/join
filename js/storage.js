@@ -1,14 +1,7 @@
-/**
- * A predefined token used to authenticate requests to a storage service.
- */
+const DATA_API_URL = "https://join.devcontain.de/api/data.php";
+const USER_API_URL = "https://join.devcontain.de/api/me.php";
 
-/* const STORAGE_TOKEN = "GGZFU08ASMNAH3MBMGAP9RUCKGE5H1V5Z9CP0MF1"; */
-
-/**
- * The base URL for the storage API.
- */
-
-/* const STORAGE_URL = "https://remote-storage.developerakademie.org/item"; */
+const INDEX_URL = "index.html";
 
 async function setItem(key, value) {
     if (key !== "users") {
@@ -18,7 +11,7 @@ async function setItem(key, value) {
     const data = JSON.parse(value)[0];
     const { name, email, password, ...projectData } = data;
 
-    const response = await fetch("https://join.devcontain.de/api/data.php", {
+    const response = await fetch(DATA_API_URL, {
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
@@ -37,7 +30,7 @@ async function getItem(key) {
         throw new Error("Unsupported storage key");
     }
 
-    const response = await fetch("https://join.devcontain.de/api/data.php", {
+    const response = await fetch(DATA_API_URL, {
         credentials: "same-origin"
     });
 
@@ -55,7 +48,7 @@ async function loadStorage() {
             await loadAllIfElseLocalOrSession();
         } catch (error) {
             console.error("Loading user failed:", error);
-            window.location.replace("index.html");
+            window.location.replace(INDEX_URL);
             return;
         }
     } else {
@@ -76,7 +69,7 @@ async function loadAllIfElseLocalOrSession() {
     users = await getItem("users");
     loaduser = 0;
 
-    const response = await fetch("https://join.devcontain.de/api/me.php", {
+    const response = await fetch(USER_API_URL, {
         credentials: "same-origin"
     });
 
@@ -94,7 +87,7 @@ async function loadAllIfElseLocalOrSession() {
 
 async function ifLocalStorageExist() {
     if (localStorage.getItem("userI") === null) {
-        window.location.assign("index.html");
+        window.location.assign(INDEX_URL);
     }
 }
 
@@ -104,7 +97,7 @@ async function ifLocalStorageExist() {
 
 async function ifSessionStorageExist() {
     if (sessionStorage.getItem("userI") === null) {
-        window.location.assign("index.html");
+        window.location.assign(INDEX_URL);
     }
 }
 

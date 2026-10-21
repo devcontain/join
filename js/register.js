@@ -1,3 +1,13 @@
+const ME_URL = "https://join.devcontain.de/api/me.php";
+const REGISTER_URL = "https://join.devcontain.de/api/register.php";
+const LOGIN_API_URL = "https://join.devcontain.de/api/login.php";
+
+const SUMMARY_URL = "summary.html";
+
+const LOCK_IMG = "assets/img/register_lock.png";
+const VISIBILITY_OFF_IMG = "assets/img/visibility_off.png";
+const VISIBILITY_ON_IMG = "assets/img/visibility.png";
+
 let users = [];
 let loaduser = 0;
 let todo = [
@@ -376,12 +386,12 @@ async function loadstorageitems() {
 }
 
 async function loadUsers() {
-    const response = await fetch("https://join.devcontain.de/api/me.php", {
+    const response = await fetch(ME_URL, {
         credentials: "same-origin"
     });
 
     if (response.ok) {
-        window.location.assign("summary.html");
+        window.location.assign(SUMMARY_URL);
     }
 }
 
@@ -400,7 +410,7 @@ async function ifelseRegister() {
         register_pw_sign_in_confirm.reportValidity();
     } else {
         try {
-            const response = await fetch("https://join.devcontain.de/api/register.php", {
+            const response = await fetch(REGISTER_URL, {
                 method: "POST",
                 credentials: "same-origin",
                 headers: { "Content-Type": "application/json" },
@@ -435,7 +445,7 @@ async function ifelseRegister() {
 
 
 async function login() {
-    const response = await fetch("https://join.devcontain.de/api/login.php", {
+    const response = await fetch(LOGIN_API_URL, {
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
@@ -456,7 +466,7 @@ async function login() {
     loaduser = 0;
     sessionStorage.setItem("userI", loaduser);
     sessionStorage.removeItem("Guest");
-    window.location.assign("summary.html");
+    window.location.assign(SUMMARY_URL);
     console.log(result);
 }
 
@@ -528,8 +538,8 @@ function singedUpSuccesRemove() {
 
 function changeLoginImg() {
     let loginpwimg = document.getElementById("register_pw_login_img");
-    if (loginpwimg.src.endsWith("assets/img/register_lock.png")) {
-        loginpwimg.src = "assets/img/visibility_off.png";
+    if (loginpwimg.src.endsWith(LOCK_IMG)) {
+        loginpwimg.src = VISIBILITY_OFF_IMG;
     }
 }
 
@@ -540,13 +550,13 @@ function changeLoginImg() {
 function changeSigninImg() {
     let signinimg = document.getElementById("register_pw_sign_in_img");
     let signinimgconfirm = document.getElementById("register_pw_sign_in_confirm_img");
-    if (signinimg.src.endsWith("assets/img/register_lock.png")) {
-        signinimg.src = "assets/img/visibility_off.png";
-        signinimgconfirm.src = "assets/img/visibility_off.png";
+    if (signinimg.src.endsWith(LOCK_IMG)) {
+        signinimg.src = VISIBILITY_OFF_IMG;
+        signinimgconfirm.src = VISIBILITY_OFF_IMG;
     }
-    if (signinimgconfirm.src.endsWith("assets/img/register_lock.png")) {
-        signinimg.src = "assets/img/visibility_off.png";
-        signinimgconfirm.src = "assets/img/visibility_off.png";
+    if (signinimgconfirm.src.endsWith(LOCK_IMG)) {
+        signinimg.src = VISIBILITY_OFF_IMG;
+        signinimgconfirm.src = VISIBILITY_OFF_IMG;
     }
 }
 
@@ -557,12 +567,12 @@ function changeSigninImg() {
 function encryptPassword1() {
     let loginpw = document.getElementById("register_pw_login_value");
     let loginpwimg = document.getElementById("register_pw_login_img");
-    if (loginpwimg.src.endsWith("assets/img/visibility_off.png")) {
+    if (loginpwimg.src.endsWith(VISIBILITY_OFF_IMG)) {
         loginpw.type = "text";
-        loginpwimg.src = "assets/img/visibility.png";
+        loginpwimg.src = VISIBILITY_ON_IMG;
     } else {
         loginpw.type = "password";
-        loginpwimg.src = "assets/img/visibility_off.png";
+        loginpwimg.src = VISIBILITY_OFF_IMG;
     }
 }
 
@@ -587,15 +597,15 @@ function encryptPassword2() {
  */
 
 function encryptPassword2IfElse(signinpw, signinpimg, signinpwconfirm, signinpwconfirmimg) {
-    if (signinpimg.src.endsWith("assets/img/visibility_off.png")) {
+    if (signinpimg.src.endsWith(VISIBILITY_OFF_IMG)) {
         signinpw.type = "text";
         signinpwconfirm.type = "text";
-        signinpimg.src = "assets/img/visibility.png";
-        signinpwconfirmimg.src = "assets/img/visibility.png";
+        signinpimg.src = VISIBILITY_ON_IMG;
+        signinpwconfirmimg.src = VISIBILITY_ON_IMG;
     } else {
         signinpw.type = "password";
         signinpwconfirm.type = "password";
-        signinpimg.src = "assets/img/visibility_off.png";
-        signinpwconfirmimg.src = "assets/img/visibility_off.png";
+        signinpimg.src = VISIBILITY_OFF_IMG;
+        signinpwconfirmimg.src = VISIBILITY_OFF_IMG;
     }
 }

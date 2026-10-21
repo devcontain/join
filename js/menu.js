@@ -1,3 +1,8 @@
+const PRIVACY_URL = "privacy_policy.html";
+const LEGAL_URL = "legal_notice.html";
+const LOGOUT_URL = "https://join.devcontain.de/api/logout.php";
+const LOGIN_URL = "index.html";
+
 /**
  * This function updates the HTML content of an element with the ID menu_user to show the initials of the currently logged-in user. It processes the user's name to extract the first letter of each of the first two names and converts them to uppercase.
  */
@@ -38,8 +43,8 @@ function closeMenu() {
 function menuInnerHTML() {
     let menu = `        
     <div class="open-menu">
-        <a href="privacy_policy.html" class="open-menu-up"> <p>Privacy Policy</p> </a>
-        <a href="legal_notice.html" class="open-menu-mid"> <p>Legal notice</p> </a>
+        <a href="${PRIVACY_URL}" class="open-menu-up"> <p>Privacy Policy</p> </a>
+        <a href="${LEGAL_URL}" class="open-menu-mid"> <p>Legal notice</p> </a>
         <a href="#" class="open-menu-down" onclick="logOut(); return false;"> <p>Log out</p> </a>
     </div>
     <div class="menu-close" onclick="closeMenu()"></div>
@@ -50,7 +55,7 @@ function menuInnerHTML() {
 
 async function logOut() {
     try {
-        const response = await fetch("https://join.devcontain.de/api/logout.php", {
+        const response = await fetch(LOGOUT_URL, {
             method: "POST",
             credentials: "same-origin",
             headers: { "Content-Type": "application/json" }
@@ -66,11 +71,9 @@ async function logOut() {
         sessionStorage.removeItem("Guest");
         sessionStorage.removeItem("handyWelcomePlayed");
 
-        window.location.assign("index.html");
+        window.location.assign(LOGIN_URL);
     } catch (error) {
         console.error("Logout failed:", error);
         alert("Logout failed. Please try again.");
     }
 }
-
-
