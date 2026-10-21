@@ -1,0 +1,8 @@
+# Credentials and secrets
+db.php
+.env
+.env.*
+!.env.example
+
+# Generated documentation
+out/

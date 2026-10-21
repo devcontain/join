@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <meta name="robots" content="notranslate">
 
     <title>Login</title>
     <link rel="icon" href="assets\img\Join.png">
@@ -11,14 +13,15 @@
     <link rel="stylesheet" href="./style_sub.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <script src="./js/storage.js"></script>
     <script src="./js/register.js"></script>
     <script src="./js/homepage.js"></script>
 </head>
 
-<body onload="loadstorageitems()" class="body-register">
+<body onload="loadstorageitems()" class="body-register" translate="no" class="notranslate">
     <div class="register-sign-up-flex" id="register_sign_up_box">
         <p>Not a Join user?</p>
         <span onclick="signUpBox()">Sign up</span>
@@ -39,8 +42,10 @@
                     <img src=" assets\img\register_mail.png">
                 </div>
                 <div class="login-input" id="register_pw_login">
-                    <input type="password" placeholder="Password" required id="register_pw_login_value" onfocus="changeLoginImg()">
-                    <img src="assets\img\register_lock.png" onclick="encryptPassword1()" id="register_pw_login_img" class="password-RL">
+                    <input type="password" placeholder="Password" required id="register_pw_login_value"
+                        onfocus="changeLoginImg()">
+                    <img src="assets\img\register_lock.png" onclick="encryptPassword1()" id="register_pw_login_img"
+                        class="password-RL">
                 </div>
                 <div class="register-login-checkbox">
                     <input type="checkbox" id="login_checkbox">
@@ -51,44 +56,48 @@
                     <a href="summary.html" onclick="registerGuestLogin()"><span>Guest Log in</span></a>
                 </div>
         </form>
+    </div>
+    <form onsubmit="register(); return false" class="d-none" id="register_sign_in">
+        <div class="register-sign-up-img">
+            <img src="assets\img\Vector.png" onclick="backToLogin()">
+            <h1>Sign up</h1>
+            <div></div>
         </div>
-        <form onsubmit="register(); return false" class="d-none" id="register_sign_in">
-            <div class="register-sign-up-img">
-                <img src="assets\img\Vector.png" onclick="backToLogin()">
-                <h1>Sign up</h1>
-                <div></div>
-            </div>
-            <div class="register-spacer"></div>
-            <div class="login-input">
-                <input minlength="5" type="text" placeholder="Name" required id="register_name">
-                <img src="assets\img\register_people.png">
-            </div>
-            <div class="login-input">
-                <input type="email" placeholder="Email" required id="register_email">
-                <img src=" assets\img\register_mail.png">
-            </div>
-            <div class="login-input">
-                <input type="password" placeholder="Password" required id="register_pw_sign_in" onfocus="changeSigninImg()">
-                <img src="assets\img\register_lock.png" onclick="encryptPassword2()" class="password-RL" id="register_pw_sign_in_img">
-            </div>
-            <div class="login-input">
-                <input minlength="5" type="password" placeholder="Confirm Password" required onfocus="changeSigninImg()" id="register_pw_sign_in_confirm">
-                <img src="assets\img\register_lock.png" class="password-RL" id="register_pw_sign_in_confirm_img" onclick="encryptPassword2()">
-            </div>
-            <div class="register-sign-up-checkbox">
-                <input minlength="5" type="checkbox" required id="register_checkbox"> I accept the <a href="">Privacy Policy</a>
-            </div>
-            <button class="register-login-sign-up-button" id="register_button">Sign in</button>
-        </form>
-        <div class="register-rights">
-            <a href="privacy_policy_register.html">Privacy Policy</a>
-            <a href="legal_notice_register.html">Legal Notice</a>
+        <div class="register-spacer"></div>
+        <div class="login-input">
+            <input minlength="5" type="text" placeholder="Name" required id="register_name">
+            <img src="assets\img\register_people.png">
         </div>
-        <div class="d-none" id="singed_Up_Succes">
-            <span>
+        <div class="login-input">
+            <input type="email" placeholder="Email" required id="register_email">
+            <img src=" assets\img\register_mail.png">
+        </div>
+        <div class="login-input">
+            <input type="password" placeholder="Password" required id="register_pw_sign_in" onfocus="changeSigninImg()">
+            <img src="assets\img\register_lock.png" onclick="encryptPassword2()" class="password-RL"
+                id="register_pw_sign_in_img">
+        </div>
+        <div class="login-input">
+            <input minlength="5" type="password" placeholder="Confirm Password" required onfocus="changeSigninImg()"
+                id="register_pw_sign_in_confirm">
+            <img src="assets\img\register_lock.png" class="password-RL" id="register_pw_sign_in_confirm_img"
+                onclick="encryptPassword2()">
+        </div>
+        <div class="register-sign-up-checkbox">
+            <input minlength="5" type="checkbox" required id="register_checkbox"> I accept the <a
+                href="privacy_policy_register.html">Privacy Policy</a>
+        </div>
+        <button class="register-login-sign-up-button" id="register_button">Sign in</button>
+    </form>
+    <div class="register-rights">
+        <a href="privacy_policy_register.html">Privacy Policy</a>
+        <a href="legal_notice_register.html">Legal Notice</a>
+    </div>
+    <div class="d-none" id="singed_Up_Succes">
+        <span>
             You Signed Up successfully!
         </span>
-        </div>
+    </div>
 </body>
 
 </html>
