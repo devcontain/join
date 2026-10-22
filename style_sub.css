@@ -286,6 +286,8 @@
     width: 50%;
     display: flex;
     justify-content: space-between;
+    /*     justify-content: center; */
+    margin-bottom: 32px;
 
     a {
         color: rgb(42, 54, 71);
@@ -321,7 +323,6 @@
     border-radius: 8px;
     border: solid 2px;
     border-color: rgb(42, 54, 71);
-    margin-bottom: 40px;
 }
 
 .register-login-sign-up-button:hover {
@@ -898,7 +899,7 @@
         margin-right: 30px;
     }
 
-    .help{
+    .help {
         margin-top: 160px !important;
     }
 
@@ -1316,11 +1317,11 @@
         }
     }
 
-    .help{
+    .help {
         margin-top: 100px !important;
     }
 
-    .law{
+    .law {
         margin-top: 100px !important;
     }
 
@@ -1538,8 +1539,8 @@
 
 
 @media only screen and (max-height: 880px) and (max-width: 700px) {
-   
-  .register-sign-up-flex {
+
+    .register-sign-up-flex {
         bottom: 0px;
     }
 
@@ -1547,31 +1548,33 @@
         margin-top: 60px;
     }
 
-    .register-login-flex, .start-register-background {
+    .register-login-flex,
+    .start-register-background {
         height: 800px;
     }
-    
+
     .register-rights {
         bottom: -40px;
     }
 }
 
 @media only screen and (max-height: 680px) and (max-width: 700px) {
-   
+
     .register-sign-up-flex {
-          bottom: -60px;
-      }
-  
-      .register-sign-up-box {
-          margin-top: 60px;
-      }
-  
-      .register-login-flex, .start-register-background {
-          height: 800px;
-      }
-      
-  
-      .register-rights {
-          bottom: -100px;
-      }
-  }
+        bottom: -60px;
+    }
+
+    .register-sign-up-box {
+        margin-top: 60px;
+    }
+
+    .register-login-flex,
+    .start-register-background {
+        height: 800px;
+    }
+
+
+    .register-rights {
+        bottom: -100px;
+    }
+}

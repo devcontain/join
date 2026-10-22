@@ -10,373 +10,242 @@ const VISIBILITY_ON_IMG = "assets/img/visibility.png";
 
 let users = [];
 let loaduser = 0;
+
 let todo = [
     {
-        title: "CSS Architecture Planning",
-        description: "Define CSS naming conventions and structures",
-        date: "14/09/2024",
+        title: "Implement User Authentication",
+        description: "Integrate secure login, session handling and access control for registered users.",
+        date: "30/10/2026",
         category: "Technical Task",
         prio: "urgent",
         subtasks: [
-            {
-                idcounter: 0,
-            },
-            {
-                id: 1,
-                name: "who does what",
-                isChecked: true
-            },
-            {
-                id: 2,
-                name: "what time",
-                isChecked: false
-            }
+            { idcounter: 3 },
+            { id: 1, name: "Implement login endpoint", isChecked: true },
+            { id: 2, name: "Validate user sessions", isChecked: false },
+            { id: 3, name: "Test access restrictions", isChecked: false }
         ],
         contacts: [
-            { idcounter: 2 },
+            { idcounter: 1 },
             {
                 id: 1,
                 firstname: "Sofia",
                 lastname: "Müller",
-                email: "sofiam@gmail.com",
+                email: "sofia@example.com",
                 phone: "+49 1111 111 11 1",
-                color: "#00BEE8",
-            },
+                color: "#00BEE8"
+            }
+        ]
+    },
+    {
+        title: "Improve Mobile Navigation",
+        description: "Optimize navigation and interactive elements for smartphones and tablets.",
+        date: "04/11/2026",
+        category: "User Story",
+        prio: "medium",
+        subtasks: [
+            { idcounter: 3 },
+            { id: 1, name: "Review responsive breakpoints", isChecked: true },
+            { id: 2, name: "Improve mobile menu", isChecked: false },
+            { id: 3, name: "Test different screen sizes", isChecked: false }
+        ],
+        contacts: [
+            { idcounter: 2 },
             {
                 id: 2,
                 firstname: "Anton",
                 lastname: "Mayer",
-                email: "antom@gmail.com",
+                email: "anton@example.com",
                 phone: "+49 1111 111 11 1",
-                color: "#FF7A00",
-            },
-        ],
+                color: "#FF7A00"
+            }
+        ]
     },
     {
-        title: "Add-Task Section",
-        description: "Define Add-Task",
-        date: "14/09/2024",
+        title: "Write API Documentation",
+        description: "Document available API endpoints, request parameters and response formats.",
+        date: "06/11/2026",
+        category: "Technical Task",
+        prio: "low",
+        subtasks: [
+            { idcounter: 2 },
+            { id: 1, name: "Document authentication endpoints", isChecked: false },
+            { id: 2, name: "Add example API responses", isChecked: false }
+        ],
+        contacts: [
+            { idcounter: 3 },
+            {
+                id: 3,
+                firstname: "Anja",
+                lastname: "Schulz",
+                email: "anja@example.com",
+                phone: "+49 1111 111 11 1",
+                color: "#9327FF"
+            }
+        ]
+    }
+];
+
+let tasksinprogress = [
+    {
+        title: "Develop Dashboard Components",
+        description: "Build reusable dashboard components with dynamic task statistics.",
+        date: "29/10/2026",
         category: "Technical Task",
         prio: "medium",
         subtasks: [
-            {
-                idcounter: 0,
-            },
-            {
-                id: 1,
-                name: "who does what",
-                isChecked: true
-            },
-            {
-                id: 2,
-                name: "what time",
-                isChecked: false
-            }
-        ],
-        contacts: [
-            { idcounter: 2 },
-            {
-                id: 1,
-                firstname: "Sofia",
-                lastname: "Müller",
-                email: "sofiam@gmail.com",
-                phone: "+49 1111 111 11 1",
-                color: "#00BEE8",
-            },
-            {
-                id: 2,
-                firstname: "Anton",
-                lastname: "Mayer",
-                email: "antom@gmail.com",
-                phone: "+49 1111 111 11 1",
-                color: "#FF7A00",
-            },
-        ],
-    },
-    {
-        title: "Add-Summary",
-        description: "Summary structures",
-        date: "14/09/2024",
-        category: "Technical Task",
-        prio: "urgent",
-        subtasks: [
-            {
-                idcounter: 0,
-            },
-            {
-                id: 1,
-                name: "who does what",
-                isChecked: true
-            },
-            {
-                id: 2,
-                name: "what time",
-                isChecked: false
-            }
+            { idcounter: 3 },
+            { id: 1, name: "Create dashboard layout", isChecked: true },
+            { id: 2, name: "Integrate task statistics", isChecked: true },
+            { id: 3, name: "Optimize component rendering", isChecked: false }
         ],
         contacts: [
             { idcounter: 4 },
             {
-                id: 1,
-                firstname: "Sofia",
-                lastname: "Müller",
-                email: "sofiam@gmail.com",
-                phone: "+49 1111 111 11 1",
-                color: "#00BEE8",
-            },
-            {
-                id: 2,
-                firstname: "Anton",
-                lastname: "Mayer",
-                email: "antom@gmail.com",
-                phone: "+49 1111 111 11 1",
-                color: "#FF7A00",
-            },
-            {
-                id: 3,
-                firstname: "Sebastian",
-                lastname: "Gei",
-                email: "Sebastian@gmail.com",
-                phone: "+49 1111 111 11 1",
-                color: "#FFBB2B",
-            },
-            {
                 id: 4,
-                firstname: "Herbert",
-                lastname: "Schwabelbabbel",
-                email: "Schwabelbabbel@gmail.com",
+                firstname: "Benedikt",
+                lastname: "Ziegler",
+                email: "benedikt@example.com",
                 phone: "+49 1111 111 11 1",
-                color: "#00BEE8",
-            },
-        ],
+                color: "#6E52FF"
+            }
+        ]
     },
     {
-        title: "Add-Storage",
-        description: "Edit stroage structures",
-        date: "14/09/2024",
+        title: "Implement Data Validation",
+        description: "Add client-side and server-side validation for form submissions.",
+        date: "28/10/2026",
         category: "Technical Task",
         prio: "urgent",
         subtasks: [
-            {
-                idcounter: 0,
-            },
-            {
-                id: 1,
-                name: "who does what",
-                isChecked: true
-            },
-            {
-                id: 2,
-                name: "what time",
-                isChecked: false
-            }
+            { idcounter: 3 },
+            { id: 1, name: "Define validation rules", isChecked: true },
+            { id: 2, name: "Implement error messages", isChecked: false },
+            { id: 3, name: "Test invalid input scenarios", isChecked: false }
         ],
         contacts: [
-            { idcounter: 2 },
+            { idcounter: 5 },
             {
-                id: 1,
-                firstname: "Sebastian",
-                lastname: "Gei",
-                email: "Sebastian@gmail.com",
+                id: 5,
+                firstname: "David",
+                lastname: "Eisenberg",
+                email: "david@example.com",
                 phone: "+49 1111 111 11 1",
-                color: "#FFBB2B",
-            },
-            {
-                id: 2,
-                firstname: "Herbert",
-                lastname: "Schwabelbabbel",
-                email: "Schwabelbabbel@gmail.com",
-                phone: "+49 1111 111 11 1",
-                color: "#00BEE8",
-            },
-        ],
-    },]
-let tasksinprogress = [
+                color: "#FC71FF"
+            }
+        ]
+    }
+];
+
+let awaitingfeedback = [
     {
-        title: "Daily Kochwelt Recipe",
-        description: "Implement daily recipe and portion calculator",
-        date: "14/09/2024",
+        title: "Review Landing Page Design",
+        description: "Review visual consistency, typography, spacing and accessibility.",
+        date: "26/10/2026",
         category: "User Story",
         prio: "low",
         subtasks: [
-            {
-                idcounter: 0,
-            },
+            { idcounter: 2 },
+            { id: 1, name: "Complete desktop design", isChecked: true },
+            { id: 2, name: "Collect stakeholder feedback", isChecked: false }
         ],
         contacts: [
-            { idcounter: 2 },
+            { idcounter: 6 },
             {
-                id: 3,
-                firstname: "Benedikt",
-                lastname: "Ziegler",
-                email: "benedikt@gmail.com",
-                phone: "+49 1111 111 11 1",
-                color: "#6E52FF",
-            },
-            {
-                id: 4,
-                firstname: "David",
-                lastname: "Eisenberg",
-                email: "davidberg@gmail.com",
-                phone: "+49 1111 111 11 1",
-                color: "#FC71FF",
-            },
-            {
-                id: 5,
+                id: 6,
                 firstname: "Eva",
                 lastname: "Fischer",
-                email: "eva@gmail.com",
+                email: "eva@example.com",
                 phone: "+49 1111 111 11 1",
-                color: "#FFBB2B",
-            },
-        ],
-    },]
-let awaitingfeedback = [{
-    title: "HTML Base Template Creation",
-    description: "Create reusable HTML base templates",
-    date: "14/09/2024",
-    category: "Technical Task",
-    prio: "low",
-    subtasks: [
-        {
-            idcounter: 0,
-        },
-    ],
-    contacts: [
-        { idcounter: 2 },
-        {
-            id: 3,
-            firstname: "Benedikt",
-            lastname: "Ziegler",
-            email: "benedikt@gmail.com",
-            phone: "+49 1111 111 11 1",
-            color: "#6E52FF",
-        },
-        {
-            id: 4,
-            firstname: "David",
-            lastname: "Eisenberg",
-            email: "davidberg@gmail.com",
-            phone: "+49 1111 111 11 1",
-            color: "#FC71FF",
-        },
-    ],
-},]
-let Urgent = [{
-    title: "CSS Architecture Planning",
-    description: "Define CSS naming conventions and structures",
-    date: "14/09/2024",
-    category: "Technical Task",
-    prio: "urgent",
-    subtasks: [
-        {
-            idcounter: 0,
-        },
-        {
-            id: 1,
-            name: "who does what",
-            isChecked: true
-        },
-        {
-            id: 2,
-            name: "what time",
-            isChecked: false
-        }
-    ],
-    contacts: [
-        { idcounter: 2 },
-        {
-            id: 1,
-            firstname: "Sofia",
-            lastname: "Müller",
-            email: "sofiam@gmail.com",
-            phone: "+49 1111 111 11 1",
-            color: "#00BEE8",
-        },
-        {
-            id: 2,
-            firstname: "Anton",
-            lastname: "Mayer",
-            email: "antom@gmail.com",
-            phone: "+49 1111 111 11 1",
-            color: "#FF7A00",
-        },
-    ],
-},]
-let contacts = [
-    { idcounter: 8 },
-    {
-        id: 0,
-        firstname: "Sofia",
-        lastname: "Müller",
-        email: "sofiam@gmail.com",
-        phone: "+49 1111 111 11 1",
-        color: "#00BEE8",
+                color: "#FFBB2B"
+            }
+        ]
     },
     {
+        title: "Test Login and Logout Flow",
+        description: "Verify successful authentication, logout behavior and session expiration.",
+        date: "27/10/2026",
+        category: "Technical Task",
+        prio: "medium",
+        subtasks: [
+            { idcounter: 2 },
+            { id: 1, name: "Complete functional testing", isChecked: true },
+            { id: 2, name: "Review QA test results", isChecked: false }
+        ],
+        contacts: [
+            { idcounter: 7 },
+            {
+                id: 7,
+                firstname: "Niklas",
+                lastname: "Rupert",
+                email: "niklas@example.com",
+                phone: "+49 1111 111 11 1",
+                color: "#00BEE8"
+            }
+        ]
+    }
+];
+
+let Urgent = [todo[0], tasksinprogress[1]];
+
+let contacts = [
+    { idcounter: 6 },
+    {
         id: 1,
-        firstname: "Anton",
-        lastname: "Mayer",
-        email: "antom@gmail.com",
+        firstname: "Sofia",
+        lastname: "Müller",
+        email: "sofia@example.com",
         phone: "+49 1111 111 11 1",
-        color: "#FF7A00",
+        color: "#00BEE8"
     },
     {
         id: 2,
-        firstname: "Anja",
-        lastname: "Schulz",
-        email: "schulz@hotmail.com",
+        firstname: "Anton",
+        lastname: "Mayer",
+        email: "anton@example.com",
         phone: "+49 1111 111 11 1",
-        color: "#9327FF",
+        color: "#FF7A00"
     },
     {
         id: 3,
-        firstname: "Benedikt",
-        lastname: "Ziegler",
-        email: "benedikt@gmail.com",
+        firstname: "Anja",
+        lastname: "Schulz",
+        email: "anja@example.com",
         phone: "+49 1111 111 11 1",
-        color: "#6E52FF",
+        color: "#9327FF"
     },
     {
         id: 4,
-        firstname: "David",
-        lastname: "Eisenberg",
-        email: "davidberg@gmail.com",
+        firstname: "Benedikt",
+        lastname: "Ziegler",
+        email: "benedikt@example.com",
         phone: "+49 1111 111 11 1",
-        color: "#FC71FF",
+        color: "#6E52FF"
     },
     {
         id: 5,
-        firstname: "Eva",
-        lastname: "Fischer",
-        email: "eva@gmail.com",
+        firstname: "David",
+        lastname: "Eisenberg",
+        email: "david@example.com",
         phone: "+49 1111 111 11 1",
-        color: "#FFBB2B",
+        color: "#FC71FF"
     },
     {
         id: 6,
-        firstname: "Niklas",
-        lastname: "Fififi",
-        email: "Fififi@gmail.com",
+        firstname: "Eva",
+        lastname: "Fischer",
+        email: "eva@example.com",
         phone: "+49 1111 111 11 1",
-        color: "#00BEE8",
+        color: "#FFBB2B"
     },
     {
         id: 7,
-        firstname: "Sebastian",
-        lastname: "Gei",
-        email: "Sebastian@gmail.com",
+        firstname: "Niklas",
+        lastname: "Rupert",
+        email: "niklas@example.com",
         phone: "+49 1111 111 11 1",
-        color: "#FFBB2B",
-    },
-    {
-        id: 8,
-        firstname: "Herbert",
-        lastname: "Schwabelbabbel",
-        email: "Schwabelbabbel@gmail.com",
-        phone: "+49 1111 111 11 1",
-        color: "#00BEE8",
-    },]
+        color: "#00BEE8"
+    }
+];
 
 async function loadstorageitems() {
     await loadUsers();
