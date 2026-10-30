@@ -19,7 +19,7 @@ let todo = [
         category: "Technical Task",
         prio: "urgent",
         subtasks: [
-            { idcounter: 3 },
+            { idcounter: 9 },
             { id: 1, name: "Implement login endpoint", isChecked: true },
             { id: 2, name: "Validate user sessions", isChecked: false },
             { id: 3, name: "Test access restrictions", isChecked: false }
@@ -43,7 +43,7 @@ let todo = [
         category: "User Story",
         prio: "medium",
         subtasks: [
-            { idcounter: 3 },
+            { idcounter: 8 },
             { id: 1, name: "Review responsive breakpoints", isChecked: true },
             { id: 2, name: "Improve mobile menu", isChecked: false },
             { id: 3, name: "Test different screen sizes", isChecked: false }
@@ -93,7 +93,7 @@ let tasksinprogress = [
         category: "Technical Task",
         prio: "medium",
         subtasks: [
-            { idcounter: 3 },
+            { idcounter: 10 },
             { id: 1, name: "Create dashboard layout", isChecked: true },
             { id: 2, name: "Integrate task statistics", isChecked: true },
             { id: 3, name: "Optimize component rendering", isChecked: false }
@@ -188,7 +188,7 @@ let awaitingfeedback = [
 let Urgent = [todo[0], tasksinprogress[1]];
 
 let contacts = [
-    { idcounter: 6 },
+    { idcounter: 12 },
     {
         id: 1,
         firstname: "Sofia",
@@ -247,7 +247,7 @@ let contacts = [
     }
 ];
 
-async function loadstorageitems() {
+async function loadStorageItems() {
     await loadUsers();
     sessionStorage.removeItem("userI");
     sessionStorage.removeItem("Guest");
@@ -270,73 +270,107 @@ async function register() {
         return;
     }
 
-    await ifelseRegister();
+    await validateRegistration();
 }
 
-async function ifelseRegister() {
-    if (register_pw_sign_in.value != register_pw_sign_in_confirm.value) {
-        register_pw_sign_in_confirm.setCustomValidity("Passwords Don't Match");
-        register_pw_sign_in_confirm.reportValidity();
+
+async function validateRegistration() {
+    const fields = getRegisterFields();
+
+    if (fields.password.value !== fields.confirmPassword.value) {
+        fields.confirmPassword.setCustomValidity("Passwords Don't Match");
+        fields.confirmPassword.reportValidity();
     } else {
         try {
-            const response = await fetch(REGISTER_URL, {
-                method: "POST",
-                credentials: "same-origin",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: register_name.value,
-                    email: register_email.value,
-                    password: register_pw_sign_in.value
-                })
-            });
-
-            if (response.status === 409) {
-                register_email.setCustomValidity("Email already exists");
-                register_email.reportValidity();
-                return;
-            }
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || `Registration failed: ${response.status}`);
-            }
-
-            resetForm();
+            const response = await sendRegistration(fields);
+            await handleRegistrationResponse(response, fields.email);
         } catch (error) {
             console.error("Registration failed:", error);
         }
     }
-    setTimeout(function () {
-        register_pw_sign_in_confirm.setCustomValidity("");
-        register_email.setCustomValidity("");
+
+    setTimeout(() => {
+        fields.confirmPassword.setCustomValidity("");
+        fields.email.setCustomValidity("");
     }, 1400);
 }
 
+function getRegisterFields() {
+    return {
+        password: document.getElementById("register_pw_sign_in"),
+        confirmPassword: document.getElementById("register_pw_sign_in_confirm"),
+        name: document.getElementById("register_name"),
+        email: document.getElementById("register_email")
+    };
+}
 
-async function login() {
-    const response = await fetch(LOGIN_API_URL, {
+function sendRegistration({ name, email, password }) {
+    return fetch(REGISTER_URL, {
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            email: register_login_value.value,
-            password: register_pw_login_value.value
+            name: name.value,
+            email: email.value,
+            password: password.value
         })
     });
+}
 
-    const result = await response.json();
-
-    if (!response.ok) {
-        register_pw_login_value.setCustomValidity("Wrong Password or Email");
-        register_pw_login_value.reportValidity();
+async function handleRegistrationResponse(response, email) {
+    if (response.status === 409) {
+        email.setCustomValidity("Email already exists");
+        email.reportValidity();
         return;
     }
 
-    loaduser = 0;
-    sessionStorage.setItem("userI", loaduser);
-    sessionStorage.removeItem("Guest");
-    window.location.assign(SUMMARY_URL);
-    console.log(result);
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Registration failed: ${response.status}`);
+    }
+
+    resetForm();
+}
+
+async function login() {
+    const password = document.getElementById("register_pw_login_value");
+    password.setCustomValidity("");
+
+    try {
+        const response = await sendLogin();
+
+        if (!response.ok) {
+            showLoginError(password, response.status);
+            return;
+        }
+
+        loaduser = 0;
+        sessionStorage.setItem("userI", loaduser);
+        sessionStorage.removeItem("Guest");
+        window.location.assign(SUMMARY_URL);
+    } catch (error) {
+        console.error("Login failed:", error);
+        showLoginError(password, 0);
+    }
+}
+
+function sendLogin() {
+    return fetch(LOGIN_API_URL, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            email: document.getElementById("register_login_value").value,
+            password: document.getElementById("register_pw_login_value").value
+        })
+    });
+}
+
+function showLoginError(password, status) {
+    password.setCustomValidity(
+        status === 401 ? "Wrong Password or Email" : "Login unavailable. Please try again."
+    );
+    password.reportValidity();
 }
 
 /**
@@ -375,11 +409,11 @@ function resetForm() {
  */
 
 function registerValueEmpty() {
-    register_name.value = "";
-    register_email.value = "";
-    register_pw_sign_in.value = "";
-    register_pw_sign_in_confirm.value = "";
-    register_checkbox.checked = false;
+    document.getElementById("register_name").value = "";
+    document.getElementById("register_email").value = "";
+    document.getElementById("register_pw_sign_in").value = "";
+    document.getElementById("register_pw_sign_in_confirm").value = "";
+    document.getElementById("register_checkbox").checked = false;
 }
 
 /**
@@ -387,8 +421,8 @@ function registerValueEmpty() {
  */
 
 function singedUpSucces() {
-    let singedupsucces = document.getElementById("singed_Up_Succes");
-    singedupsucces.classList.replace("d-none", "singed-Up-Succes");
+    let singedupsucces = document.getElementById("signed_up_success");
+    singedupsucces.classList.replace("d-none", "signed_up_success");
     setTimeout(singedUpSuccesRemove, 2000);
 }
 
@@ -397,7 +431,7 @@ function singedUpSucces() {
  */
 
 function singedUpSuccesRemove() {
-    let singedupsucces = document.getElementById("singed_Up_Succes");
+    let singedupsucces = document.getElementById("signed_up_success");
     singedupsucces.classList.replace("singed-Up-Succes", "d-none");
 }
 
@@ -433,7 +467,7 @@ function changeSigninImg() {
  * This function toggles the visibility of the login password input field when clicked.
  */
 
-function encryptPassword1() {
+function toggleLoginPassword() {
     let loginpw = document.getElementById("register_pw_login_value");
     let loginpwimg = document.getElementById("register_pw_login_img");
     if (loginpwimg.src.endsWith(VISIBILITY_OFF_IMG)) {
@@ -449,12 +483,12 @@ function encryptPassword1() {
  * This function toggles the visibility of the registration password input fields when clicked.
  */
 
-function encryptPassword2() {
+function toggleSignupPassword() {
     let signinpw = document.getElementById("register_pw_sign_in");
     let signinpimg = document.getElementById("register_pw_sign_in_img");
     let signinpwconfirm = document.getElementById("register_pw_sign_in_confirm");
     let signinpwconfirmimg = document.getElementById("register_pw_sign_in_confirm_img");
-    encryptPassword2IfElse(signinpw, signinpimg, signinpwconfirm, signinpwconfirmimg);
+    handleSignupPassword(signinpw, signinpimg, signinpwconfirm, signinpwconfirmimg);
 }
 
 /**
@@ -465,7 +499,7 @@ function encryptPassword2() {
  * @param {string} signinpwconfirmimg -The visibility icon image for the confirmation password field.
  */
 
-function encryptPassword2IfElse(signinpw, signinpimg, signinpwconfirm, signinpwconfirmimg) {
+function handleSignupPassword(signinpw, signinpimg, signinpwconfirm, signinpwconfirmimg) {
     if (signinpimg.src.endsWith(VISIBILITY_OFF_IMG)) {
         signinpw.type = "text";
         signinpwconfirm.type = "text";

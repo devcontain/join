@@ -48,7 +48,7 @@ async function getItem(key) {
 async function loadStorage() {
     if (sessionStorage.getItem("Guest") === null) {
         try {
-            await loadAllIfElseLocalOrSession();
+            await loadProjectData();
         } catch (error) {
             console.error("Loading user failed:", error);
             window.location.replace(INDEX_URL);
@@ -59,7 +59,7 @@ async function loadStorage() {
         users = JSON.parse(sessionStorage.getItem("Guest"));
     }
 
-    await loadAllIfElse();
+    await initPage();
 
     if (sessionStorage.getItem("Guest")) {
         await includeHTML();
@@ -68,7 +68,7 @@ async function loadStorage() {
     menuLoginName();
 }
 
-async function loadAllIfElseLocalOrSession() {
+async function loadProjectData() {
     users = await getItem("users");
     loaduser = 0;
 
@@ -87,14 +87,14 @@ async function loadAllIfElseLocalOrSession() {
 /**
  * Loads different parts of the application based on available global functions and session state.
  */
-async function loadAllIfElse() {
-    if (window.loadSummaryProject) {
-        loadSummaryProject();
-        timeIfElse();
+async function initPage() {
+    if (window.initSummary) {
+        initSummary();
+        updateGreeting();
     }
 
-    if (window.boardinit) {
-        boardinit();
+    if (typeof window.initBoard === "function") {
+        initBoard();
     }
 
     if (document.getElementById("add_task_page") && typeof window.fillAddTaskSection === "function") {
@@ -102,14 +102,14 @@ async function loadAllIfElse() {
     }
 
     if (window.initContacts) {
-        await contactsIfElse();
+        await initContactsPage();
     }
 }
 
 /**
  * Determines how to load contact information based on the presence of guest data in session storage.
  */
-async function contactsIfElse() {
+async function initContactsPage() {
     if (sessionStorage.getItem("Guest") === null) {
         await initContacts();
     } else {
@@ -122,11 +122,11 @@ async function contactsIfElse() {
  * Calls userTime() for logged-in users or guestTime() for guests.
  * Clears the summary name if guest data is present.
  */
-function timeIfElse() {
+function updateGreeting() {
     if (sessionStorage.getItem("Guest") === null) {
         userTime();
     } else {
         guestTime();
-        sommary_name.textContent = "";
+        summary_name.textContent = "";
     }
 }

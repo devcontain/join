@@ -8,7 +8,7 @@
     <meta name="robots" content="notranslate">
 
     <title>Login</title>
-    <link rel="icon" href="assets\img\Join.png">
+    <link rel="icon" href="assets/img/Join.png">
     <link rel="stylesheet" href="./style_main.css">
     <link rel="stylesheet" href="./style_sub.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,10 +21,10 @@
     <script src="./js/homepage.js"></script>
 </head>
 
-<body onload="loadstorageitems()" class="body-register" translate="no" class="notranslate">
+<body onload="loadStorageItems()" class="body-register" translate="no" class="notranslate">
     <div class="register-sign-up-flex" id="register_sign_up_box">
-<!--         <p>Not a Join user?</p> -->
-<!--         <span onclick="signUpBox()">Sign up</span> -->
+        <!--         <p>Not a Join user?</p> -->
+        <!--         <span onclick="signUpBox()">Sign up</span> -->
     </div>
     <div id="start_register_background" class="start-register-background">
         <div id="start_register_box" class="start-register-box">
@@ -44,18 +44,30 @@
                 <div class="login-input" id="register_pw_login">
                     <input type="password" placeholder="Password" required id="register_pw_login_value"
                         onfocus="changeLoginImg()">
-                    <img src="assets\img\register_lock.png" onclick="encryptPassword1()" id="register_pw_login_img"
+                    <img src="assets\img\register_lock.png" onclick="toggleLoginPassword()" id="register_pw_login_img"
                         class="password-RL">
                 </div>
                 <div class="register-login-checkbox">
                     <input type="checkbox" id="login_checkbox">
-                    <span>Remeber me</span>
+                    <span>Remember me</span>
                 </div>
                 <div class="register-login-button-flex">
                     <button class="register-login-sign-up-button">Log in</button>
                     <a href="summary.html" onclick="registerGuestLogin()"><span>Guest Log in</span></a>
                 </div>
+            </div>
         </form>
+        <p class="login-demo-notice">
+            JOIN is a portfolio demonstration project.
+            Public registration is intentionally disabled to limit
+            the collection and storage of personal data.
+            <br><br>
+            You can explore JOIN using the Guest Login or the
+            demo credentials provided in your email.
+            <br><br>
+            Demo accounts support saving changes.
+            All demo account data is automatically deleted after 30 days.
+        </p>
     </div>
     <form onsubmit="register(); return false" class="d-none" id="register_sign_in">
         <div class="register-sign-up-img">
@@ -65,7 +77,7 @@
         </div>
         <div class="register-spacer"></div>
         <div class="login-input">
-            <input minlength="5" type="text" placeholder="Name" required id="register_name">
+            <input minlength="12" type="text" placeholder="Name" required id="register_name">
             <img src="assets\img\register_people.png">
         </div>
         <div class="login-input">
@@ -74,26 +86,26 @@
         </div>
         <div class="login-input">
             <input type="password" placeholder="Password" required id="register_pw_sign_in" onfocus="changeSigninImg()">
-            <img src="assets\img\register_lock.png" onclick="encryptPassword2()" class="password-RL"
+            <img src="assets\img\register_lock.png" onclick="toggleSignupPassword()" class="password-RL"
                 id="register_pw_sign_in_img">
         </div>
         <div class="login-input">
             <input minlength="12" type="password" placeholder="Confirm Password" required onfocus="changeSigninImg()"
                 id="register_pw_sign_in_confirm">
             <img src="assets\img\register_lock.png" class="password-RL" id="register_pw_sign_in_confirm_img"
-                onclick="encryptPassword2()">
+                onclick="toggleSignupPassword()">
         </div>
         <div class="register-sign-up-checkbox">
-            <input minlength="5" type="checkbox" required id="register_checkbox"> I accept the <a
+            <input minlength="12" type="checkbox" required id="register_checkbox"> I accept the <a
                 href="privacy_policy_register.html">Privacy Policy</a>
         </div>
-<!--         <button class="register-login-sign-up-button" id="register_button">Sign in</button> -->
+        <!--         <button class="register-login-sign-up-button" id="register_button">Sign in</button> -->
     </form>
     <div class="register-rights">
         <a href="privacy_policy_register.html">Privacy Policy</a>
         <a href="legal_notice_register.html">Legal Notice</a>
     </div>
-    <div class="d-none" id="singed_Up_Succes">
+    <div class="d-none" id="signed_up_success">
         <span>
             You Signed Up successfully!
         </span>

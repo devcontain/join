@@ -23,7 +23,7 @@ function boardSafeColor(value) {
 /**
  * start functions onload, render tasks, empty fields informations and empty Box hover
  */
-function boardinit() {
+function initBoard() {
     renderTasks();
     showEmptyHtmlTodo();
     showEmptyHtmlInprogress();
@@ -93,7 +93,7 @@ function showEmptyHtmlDone() {
 function closeCard() {
     document.getElementById("fullscreen_information").classList.add("d-none");
     selectedcontacts = [];
-    boardinit();
+    initBoard();
 }
 
 /**
@@ -500,7 +500,7 @@ async function dropOn(ev, droparray) {
     let select = users[loaduser];
     select[droparray].push(currentdraggedarray[currentdragged]);
     currentdraggedarray.splice(currentdragged, 1);
-    boardinit();
+    initBoard();
     await saveToServer();
 }
 
@@ -546,7 +546,7 @@ function searchTitleStart() {
     if (searchlength >= 1) {
         renderResults(filterResults(search), todoplace, inprogressplace, awaitfeedbackplace, doneplace);
     } else {
-        boardinit();
+        initBoard();
     }
 }
 
@@ -622,7 +622,7 @@ function showHtml(item, place, index) {
 async function deleteSingleTask(i) {
     if (currentdraggedarray[i].prio === "urgent") users[loaduser].Urgent.splice(0, 1);
     currentdraggedarray.splice(i, 1);
-    boardinit();
+    initBoard();
     closeCard();
     await saveToServer();
 }
@@ -718,7 +718,7 @@ async function moveTask(category) {
     let select = users[loaduser];
     select[category].push(currentdraggedarray[currentdragged]);
     currentdraggedarray.splice(currentdragged, 1);
-    boardinit();
+    initBoard();
     await saveToServer();
     document.getElementById("fullscreen_information").classList.add("d-none");
 }

@@ -225,6 +225,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+}
+
+.login-demo-notice {
+    text-align: center;
+    width: 90%;
 }
 
 .register-login {
@@ -271,6 +277,7 @@
 }
 
 .register-login-checkbox {
+    visibility: hidden;
     margin-right: 250px;
     margin-top: 24px;
     margin-bottom: 24px;
@@ -413,6 +420,9 @@
 }
 
 .register-rights {
+    display: flex;
+    justify-content: center;
+    width: 100%;
     position: absolute;
     bottom: 3%;
 

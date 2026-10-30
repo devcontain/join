@@ -2,32 +2,32 @@
 /**
  * These functions update the textContent of an element (presumably identified by summary_good_morning) to greet the user appropriately based on the current time.
  */
-
 function guestTime() {
     const guesttime = new Date().getHours();
+    const greeting = document.getElementById("summary_good_morning");
 
     if (guesttime >= 18) {
-        summary_good_morning.textContent = 'Good evening!';
+        greeting.textContent = 'Good evening!';
     } else if (guesttime >= 12) {
-        summary_good_morning.textContent = 'Good afternoon!';
+        greeting.textContent = 'Good afternoon!';
     } else {
-        summary_good_morning.textContent = 'Good morning!';
+        greeting.textContent = 'Good morning!';
     }
 }
 
 /**
  * These functions update the textContent of an element (presumably identified by summary_good_morning) to greet the user appropriately based on the current time.
  */
-
 function userTime() {
     const usertime = new Date().getHours();
+    const greeting = document.getElementById("summary_good_morning");
 
     if (usertime >= 18) {
-        summary_good_morning.textContent = 'Good evening,';
+        greeting.textContent = 'Good evening,';
     } else if (usertime >= 12) {
-        summary_good_morning.textContent = 'Good afternoon,';
+        greeting.textContent = 'Good afternoon,';
     } else {
-        summary_good_morning.textContent = 'Good morning,';
+        greeting.textContent = 'Good morning,';
     }
 }
 
@@ -36,7 +36,7 @@ function userTime() {
  *
  */
 
-function loadSummaryProject() {
+function initSummary() {
     let todo = document.getElementById('summary_to_do');
     let done = document.getElementById('summary_done');
     let urgent = document.getElementById('summary_urgent');
@@ -44,8 +44,8 @@ function loadSummaryProject() {
     let inprogress = document.getElementById('summary_progress');
     let awaitfeedback = document.getElementById('summary_feedback');
     let inboard = document.getElementById('summary_in_board');
-    let name = document.getElementById('sommary_name');
-    loadSummaryInnerhtml(inboard, todo, done, urgent, deadline, inprogress, awaitfeedback, name);
+    let name = document.getElementById('summary_name');
+    renderSummary(inboard, todo, done, urgent, deadline, inprogress, awaitfeedback, name);
 }
 
 /**
@@ -60,7 +60,7 @@ function loadSummaryProject() {
  * @param {Array} name - A DOM element that displays the name of the user.
  */
 
-function loadSummaryInnerhtml(inboard, todo, done, urgent, deadline, inprogress, awaitfeedback, name) {
+function renderSummary(inboard, todo, done, urgent, deadline, inprogress, awaitfeedback, name) {
     todo.textContent = users[loaduser].todo.length;
     done.textContent = users[loaduser].done.length;
     urgent.textContent = users[loaduser].Urgent.length;
