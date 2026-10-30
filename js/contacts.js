@@ -5,17 +5,16 @@ window.onresize = switchViewOnSize;
 /**
  * This function loads all sorts and renders the contact-list on load of the contacts-page.
  */
-async function initContacts() {
-    await sortContacts();
+function initContacts() {
+    sortContacts();
     renderContacts();
 }
 
 /**
  * This function sorts the contacts by firstname.
  */
-async function sortContacts() {
+function sortContacts() {
     users[loaduser].contacts = users[loaduser].contacts.sort((a, b) => (a.firstname > b.firstname ? 1 : -1));
-    await saveToServer();
 }
 
 /**

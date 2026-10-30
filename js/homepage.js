@@ -22,7 +22,7 @@ function signUpBox() {
 function loginValueEmpty() {
     register_login_value.value = "";
     register_pw_login_value.value = "";
-    login_checkbox.checked = false;
+/*     login_checkbox.checked = false; */
 }
 
 /**
