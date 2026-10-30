@@ -3,7 +3,7 @@
  * These functions update the textContent of an element (presumably identified by summary_good_morning) to greet the user appropriately based on the current time.
  */
 
-async function guestTime() {
+function guestTime() {
     const guesttime = new Date().getHours();
 
     if (guesttime >= 18) {
@@ -19,7 +19,7 @@ async function guestTime() {
  * These functions update the textContent of an element (presumably identified by summary_good_morning) to greet the user appropriately based on the current time.
  */
 
-async function userTime() {
+function userTime() {
     const usertime = new Date().getHours();
 
     if (usertime >= 18) {
