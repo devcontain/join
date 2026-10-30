@@ -68,7 +68,9 @@ function openContact(id, card) {
         card.classList.add("selected");
         card.querySelector(".profile-fullname").classList.add("selected");
     }
-    document.documentElement.clientWidth <= 850 ? changeViewMobile() : "";
+    if (document.documentElement.clientWidth <= 850) {
+        changeViewMobile();
+    }
 }
 
 /**
@@ -135,7 +137,6 @@ function openContactsSideMenu(event) {
  */
 async function closeContactsSideMenu() {
     let menu = document.querySelector(".profile-buttons");
-    let main = document.querySelector("main.contacts");
     menu.style.removeProperty("width");
     await delay(300);
     menu.style.removeProperty("padding");
@@ -221,7 +222,11 @@ function formatName(fullname) {
     let firstname = "";
     for (let i = 0; i < names.length - 1; i++) {
         const name = names[i];
-        i != names.length - 2 ? (firstname += capitalize(name) + " ") : (firstname += capitalize(name));
+        if (i !== names.length - 2) {
+            firstname += capitalize(name) + " ";
+        } else {
+            firstname += capitalize(name);
+        }
     }
     let lastname = capitalize(names[names.length - 1]);
     return { firstname: firstname, lastname: lastname };
@@ -268,7 +273,7 @@ async function saveNewContact() {
     let newcontact = buildNewContactArray();
     users[loaduser].contacts.push(newcontact);
     await saveToServer();
-    initContacts();
+    await initContacts();
     closeOverlay();
     document.getElementById("contact-added-notification").classList.add("notification-display");
     await delay(1500);

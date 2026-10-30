@@ -679,7 +679,7 @@ function addAddTaskEventListeners() {
  * @param {*} milliseconds - This is the time in milliseconds.
  * @returns - The timeout.
  */
-async function delay(milliseconds) {
+function delay(milliseconds) {
     return new Promise((resolve) => {
         setTimeout(resolve, milliseconds);
     });

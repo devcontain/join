@@ -116,7 +116,21 @@ function bordAddNewTask(array) {
  * @param {object} element - HTML element triggered that event
  */
 function openBordTask(id, element) {
-    element.parentElement && element.parentElement.id === "to_do_place" ? (dragTodo(id), openTask(id, "todo")) : element.parentElement && element.parentElement.id === "in_progress_place" ? (dragInProgress(id), openTask(id, "tasksinprogress")) : element.parentElement && element.parentElement.id === "await_feedback_place" ? (dragAwaitFeedback(id), openTask(id, "awaitingfeedback")) : element.parentElement && element.parentElement.id === "done_place" && (dragDone(id), openTask(id, "done"));
+    const parentid = element.parentElement?.id;
+
+    if (parentid === "to_do_place") {
+        dragTodo(id);
+        openTask(id, "todo");
+    } else if (parentid === "in_progress_place") {
+        dragInProgress(id);
+        openTask(id, "tasksinprogress");
+    } else if (parentid === "await_feedback_place") {
+        dragAwaitFeedback(id);
+        openTask(id, "awaitingfeedback");
+    } else if (parentid === "done_place") {
+        dragDone(id);
+        openTask(id, "done");
+    }
 }
 
 /**
@@ -149,8 +163,7 @@ function openTask(i, key) {
 function editSingleTask(i, key) {
     let getplacetaskvariantbord = document.getElementById("add_bordtask_data");
     const selectarray = currentdraggedarray[i];
-    const { categorytodo, titletodo, descriptiontodo, subtaskstodo, contactstodo, priotodo, datetodo } = informationTodo(selectarray);
-    categorytodo;
+    const { titletodo, descriptiontodo, subtaskstodo, contactstodo, priotodo, datetodo } = informationTodo(selectarray);
     const choosenpriority = selectPriority(priotodo);
     getplacetaskvariantbord.innerHTML = editTaskHtml(titletodo, descriptiontodo, i, choosenpriority, datetodo, key);
     initAddTask(i, priotodo);
@@ -323,7 +336,9 @@ function drag(id, element) {
         done_place: dragDone,
     };
     const dragFunction = dragFunctions[parentElementId];
-    dragFunction ? dragFunction(id) : null;
+    if (dragFunction) {
+        dragFunction(id);
+    }
 }
 
 /**
@@ -405,7 +420,9 @@ function countSelectedCheckboxes(subtaskstodo) {
     let count = 1;
     for (let checkindex = 0; checkindex < subtaskstodo.length; checkindex++) {
         const check = subtaskstodo[checkindex]["isChecked"];
-        check == true ? count++ : "";
+        if (check === true) {
+            count++;
+        }
     }
     return count;
 }
@@ -526,7 +543,11 @@ function getSearchInput() {
 function searchTitleStart() {
     const { search, searchlength } = getSearchInput();
     const { todoplace, inprogressplace, awaitfeedbackplace, doneplace } = searchTaskPlace();
-    searchlength >= 1 ? renderResults(filterResults(search), todoplace, inprogressplace, awaitfeedbackplace, doneplace) : boardinit();
+    if (searchlength >= 1) {
+        renderResults(filterResults(search), todoplace, inprogressplace, awaitfeedbackplace, doneplace);
+    } else {
+        boardinit();
+    }
 }
 
 /**
@@ -575,7 +596,11 @@ function renderResults(filteredResults, todoplace, inprogressplace, awaitfeedbac
  */
 function renderResultsCategory(results, place) {
     place.replaceChildren();
-    results.length <= 0 ? (place.innerHTML = nothingFound()) : results.forEach((item, index) => showHtml(item, place, index));
+    if (results.length <= 0) {
+        place.innerHTML = nothingFound();
+    } else {
+        results.forEach((item, index) => showHtml(item, place, index));
+    }
 }
 
 /**
@@ -585,10 +610,9 @@ function renderResultsCategory(results, place) {
  * @param {number} index - identifer for one of four arrays
  */
 function showHtml(item, place, index) {
-    place.id === "to_do_place" && showTaskHtml(item, index, "to_do_place");
-    place.id === "in_progress_place" && showTaskHtml(item, index, "in_progress_place");
-    place.id === "await_feedback_place" && showTaskHtml(item, index, "await_feedback_place");
-    place.id === "done_place" && showTaskHtml(item, index, "done_place");
+    if (["to_do_place", "in_progress_place", "await_feedback_place", "done_place"].includes(place.id)) {
+        showTaskHtml(item, index, place.id);
+    }
 }
 
 /**
@@ -608,7 +632,11 @@ async function deleteSingleTask(i) {
  * otherwise, it stores the data as a session storage item for the user
  */
 async function saveToServer() {
-    sessionStorage.getItem("Guest") === null ? await setItem("users", JSON.stringify(users)) : sessionStorage.setItem("Guest", JSON.stringify(users));
+    if (sessionStorage.getItem("Guest") === null) {
+        await setItem("users", JSON.stringify(users));
+    } else {
+        sessionStorage.setItem("Guest", JSON.stringify(users));
+    }
 }
 
 /**
@@ -642,8 +670,21 @@ function editSubtaskFactory(subtaskstodo) {
  * @param {element} ele - html element
  */
 function openMoveMenue(i, ele) {
-    const parentId = ele.parentElement.parentElement.parentElement.id;
-    parentId === "to_do_place" ? (dragTodo(i), openMoveTaskMenu("todo")) : parentId === "in_progress_place" ? (dragInProgress(i), openMoveTaskMenu("tasksinprogress")) : parentId === "await_feedback_place" ? (dragAwaitFeedback(i), openMoveTaskMenu("awaitingfeedback")) : parentId === "done_place" && (dragDone(i), openMoveTaskMenu("done"));
+    const parentid = ele.parentElement.parentElement.parentElement.id;
+
+    if (parentid === "to_do_place") {
+        dragTodo(i);
+        openMoveTaskMenu("todo");
+    } else if (parentid === "in_progress_place") {
+        dragInProgress(i);
+        openMoveTaskMenu("tasksinprogress");
+    } else if (parentid === "await_feedback_place") {
+        dragAwaitFeedback(i);
+        openMoveTaskMenu("awaitingfeedback");
+    } else if (parentid === "done_place") {
+        dragDone(i);
+        openMoveTaskMenu("done");
+    }
 }
 
 /**
@@ -655,7 +696,17 @@ function openMoveTaskMenu(movekey) {
     let getplacecard = document.getElementById("add_bordtask_data");
     document.getElementById("fullscreen_information").classList.remove("d-none");
     getplacecard.innerHTML = moveTaskMenue(movekey);
-    movekey === "todo" ? document.getElementById("light_todo").classList.add("highlight-color") : movekey === "tasksinprogress" ? document.getElementById("light_inprogress").classList.add("highlight-color") : movekey === "awaitingfeedback" ? document.getElementById("light_awaitfeedback").classList.add("highlight-color") : movekey === "done" && document.getElementById("light_done").classList.add("highlight-color");
+
+    const ids = {
+        todo: "light_todo",
+        tasksinprogress: "light_inprogress",
+        awaitingfeedback: "light_awaitfeedback",
+        done: "light_done"
+    };
+
+    if (ids[movekey]) {
+        document.getElementById(ids[movekey]).classList.add("highlight-color");
+    }
 }
 
 /**

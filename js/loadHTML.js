@@ -466,7 +466,7 @@ function editTaskHtml(titletodo, descriptiontodo, i, choosenpriority, datetodo, 
                                 </div>
                                 <div class="input-with-button-wrapper">
                                     <input id="input_with_button_date" class="styled-input focus-blue" placeholder="dd/mm/yyyy"
-                                        type="text" required pattern="([0-9]{2}\/[0-9]{2}\/[0-9]{4})" value="${templateEscapeHTML(datetodo)}">
+                                        type="text" required pattern="([0-9]{2}/[0-9]{2}/[0-9]{4})" value="${templateEscapeHTML(datetodo)}">
                                     <input id="input_calendar" class="calendar-input" type="date" value=""
                                         onchange="transferDate()" min='1899-01-01'>
                                 </div>

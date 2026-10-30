@@ -9,7 +9,10 @@ async function setItem(key, value) {
     }
 
     const data = JSON.parse(value)[0];
-    const { name, email, password, ...projectData } = data;
+    const projectData = { ...data };
+    delete projectData.name;
+    delete projectData.email;
+    delete projectData.password;
 
     const response = await fetch(DATA_API_URL, {
         method: "POST",

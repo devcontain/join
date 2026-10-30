@@ -13,9 +13,6 @@ export default defineConfig([
       sourceType: "script",
       globals: {
         ...globals.browser,
-        users: "writable",
-        loaduser: "writable",
-        generateContactDropdownHtml: "readonly",
       },
     },
 
