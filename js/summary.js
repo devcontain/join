@@ -36,7 +36,7 @@ async function userTime() {
  *
  */
 
-async function loadSummaryProject() {
+function loadSummaryProject() {
     let todo = document.getElementById('summary_to_do');
     let done = document.getElementById('summary_done');
     let urgent = document.getElementById('summary_urgent');
@@ -60,7 +60,7 @@ async function loadSummaryProject() {
  * @param {Array} name - A DOM element that displays the name of the user.
  */
 
-async function loadSummaryInnerhtml(inboard, todo, done, urgent, deadline, inprogress, awaitfeedback, name) {
+function loadSummaryInnerhtml(inboard, todo, done, urgent, deadline, inprogress, awaitfeedback, name) {
     todo.textContent = users[loaduser].todo.length;
     done.textContent = users[loaduser].done.length;
     urgent.textContent = users[loaduser].Urgent.length;

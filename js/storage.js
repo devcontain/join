@@ -82,30 +82,8 @@ async function loadAllIfElseLocalOrSession() {
 }
 
 /**
- * Redirects to the start page if no user data is found in local storage.
- */
-
-async function ifLocalStorageExist() {
-    if (localStorage.getItem("userI") === null) {
-        window.location.assign(INDEX_URL);
-    }
-}
-
-/**
- * Redirects to the start page if no user data is found in session storage.
- */
-
-async function ifSessionStorageExist() {
-    if (sessionStorage.getItem("userI") === null) {
-        window.location.assign(INDEX_URL);
-    }
-}
-
-/**
  * Loads different parts of the application based on available global functions and session state.
  */
-
-
 async function loadAllIfElse() {
     if (window.loadSummaryProject) {
         loadSummaryProject();
@@ -121,15 +99,13 @@ async function loadAllIfElse() {
     }
 
     if (window.initContacts) {
-        contactsIfElse();
+        await contactsIfElse();
     }
 }
-
 
 /**
  * Determines how to load contact information based on the presence of guest data in session storage.
  */
-
 async function contactsIfElse() {
     if (sessionStorage.getItem("Guest") === null) {
         await initContacts();
@@ -143,8 +119,7 @@ async function contactsIfElse() {
  * Calls userTime() for logged-in users or guestTime() for guests.
  * Clears the summary name if guest data is present.
  */
-
-async function timeIfElse() {
+function timeIfElse() {
     if (sessionStorage.getItem("Guest") === null) {
         userTime();
     } else {
