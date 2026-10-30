@@ -6,3 +6,5 @@ db.php
 
 # Generated documentation
 out/
+
+node_modules/

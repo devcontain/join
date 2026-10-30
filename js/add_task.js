@@ -6,10 +6,6 @@ let selectedcontacts = [];
 let currentTask = {};
 let currentSubtask = {};
 
-async function fillAddTaskSectionload() {
-    fillAddTaskSection();
-}
-
 /**
  * This function adds several components to the add-task-page like dropdown-menus, event-listeners, minimum-date and selects a priority.
  *
@@ -111,14 +107,17 @@ function dontChangeFocus(event) {
  * @param {number} id - This is the unique-id of the selected contact.
  * @param {boolean} selected - This tells wether the contacts is currently selected or not.
  */
+
 function selectTaskContact(entry, id, selected) {
     entry.classList.toggle("selected");
 
-    entry.children[1].attributes[0].value === "./assets/img/check_button_unchecked.svg"
-        ? (entry.children[1].src = "./assets/img/check_button_checked.svg")
-        : entry.children[1].attributes[0].value === "./assets/img/check_button_checked.svg"
-            ? (entry.children[1].src = "./assets/img/check_button_unchecked.svg")
-            : "";
+    const checkIcon = entry.children[1];
+
+    if (checkIcon.getAttribute("src") === "./assets/img/check_button_unchecked.svg") {
+        checkIcon.src = "./assets/img/check_button_checked.svg";
+    } else if (checkIcon.getAttribute("src") === "./assets/img/check_button_checked.svg") {
+        checkIcon.src = "./assets/img/check_button_unchecked.svg";
+    }
 
     if (selected === true) {
         const index = selectedcontacts.findIndex((element) => element.id === id);
@@ -134,6 +133,7 @@ function selectTaskContact(entry, id, selected) {
 
     renderSelectedContacts();
 }
+
 
 /**
  * This function sets the selected priority of the task or sets it back to 'medium' on clear.
@@ -282,11 +282,12 @@ function clearInput(id) {
 /**
  * This function adds a new or edits an existing subtask.
  *
- * @param {number} inputid - This is the unique-id of the subtask.
- * @param {array} subtask - This is the complete subtask, that is to be edited.
+ * @param {string} inputid - The ID of the subtask input element.
+ * @param {object} subtask - The existing subtask to edit.
  */
 function addSubtask(inputid, subtask) {
-    !subtask ? (input = document.getElementById(inputid)) : (input = subtask);
+    const input = subtask ? subtask : document.getElementById(inputid);
+
     setSubtaskData(input, subtask);
     allsubtasks.push(currentSubtask);
     allsubtasks[0].idcounter++;
@@ -305,8 +306,6 @@ function addSubtask(inputid, subtask) {
  * @param {array} subtask - This is the complete subtask that is to be edited
  */
 function setSubtaskData(input, subtask) {
-    currentSubtask;
-
     if (!subtask) {
         currentSubtask.id = allsubtasks[0].idcounter;
         currentSubtask.name = input.value;
@@ -451,8 +450,12 @@ function getAllAddTaskFormInputs(withKey) {
  * This function transfers the date from the calendar-date-picker to the date-input-field.
  */
 function transferDate() {
-    let date = formatDate(document.getElementById("input_calendar").value);
-    let result = [day, month, year].join("/");
+    const { day, month, year } = formatDate(
+        document.getElementById("input_calendar").value
+    );
+
+    const result = [day, month, year].join("/");
+
     document.getElementById("input_with_button_date").value = result;
 }
 
@@ -460,8 +463,9 @@ function transferDate() {
  * This function sets the earliest pickable date to today.
  */
 function setMinDate() {
-    let date = formatDate();
-    let result = [year, month, day].join("-");
+    const { year, month, day } = formatDate();
+    const result = [year, month, day].join("-");
+
     document.getElementById("input_calendar").setAttribute("min", result);
     document.getElementById("input_with_button_date").setAttribute("min", result);
 }
@@ -473,10 +477,12 @@ function setMinDate() {
  * @returns - The date as array.
  */
 function formatDate(date) {
-    !date ? (formatteddate = new Date()) : (formatteddate = new Date(date));
-    formatteddate, (month = "" + (formatteddate.getMonth() + 1)), (day = "" + formatteddate.getDate()), (year = formatteddate.getFullYear());
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
+    const formattedDate = date ? new Date(date) : new Date();
+
+    const day = String(formattedDate.getDate()).padStart(2, "0");
+    const month = String(formattedDate.getMonth() + 1).padStart(2, "0");
+    const year = formattedDate.getFullYear();
+
     return { day, month, year };
 }
 
@@ -569,7 +575,9 @@ function addDataFromInputs(i) {
  */
 function addPrio() {
     document.getElementsByName("prio").forEach((prio) => {
-        prio.checked ? (currentTask["prio"] = prio.value) : "";
+        if (prio.checked) {
+            currentTask.prio = prio.value;
+        }
     });
 }
 
@@ -613,11 +621,16 @@ function changeTaskInUserArray(i, key) {
  */
 async function saveTask(array) {
     pushTaskToUserArray(array);
-    currentTask.prio === "urgent" ? users[loaduser].Urgent.push(currentTask) : "";
 
-    sessionStorage.getItem("Guest") === null
-        ? await setItem("users", JSON.stringify(users))
-        : sessionStorage.setItem("Guest", JSON.stringify(users));
+    if (currentTask.prio === "urgent") {
+        users[loaduser].Urgent.push(currentTask);
+    }
+
+    if (sessionStorage.getItem("Guest") === null) {
+        await setItem("users", JSON.stringify(users));
+    } else {
+        sessionStorage.setItem("Guest", JSON.stringify(users));
+    }
 
     tasks.push(currentTask);
 }
@@ -631,9 +644,11 @@ async function saveTask(array) {
 async function saveEditedTask(i, key) {
     changeTaskInUserArray(i, key);
 
-    sessionStorage.getItem("Guest") === null
-        ? await setItem("users", JSON.stringify(users))
-        : sessionStorage.setItem("Guest", JSON.stringify(users));
+    if (sessionStorage.getItem("Guest") === null) {
+        await setItem("users", JSON.stringify(users));
+    } else {
+        sessionStorage.setItem("Guest", JSON.stringify(users));
+    }
 
     tasks.push(currentTask);
     closeCard();

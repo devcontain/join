@@ -113,8 +113,8 @@ async function loadAllIfElse() {
     if (window.boardinit) {
         boardinit();
     }
-    if (window.fillAddTaskSectionload && window.boardinit == null) {
-        fillAddTaskSection();
+    if (typeof window.fillAddTaskSection === "function" && typeof window.boardinit !== "function") {
+        window.fillAddTaskSection();
     }
     if (window.initContacts) {
         contactsIfElse();
