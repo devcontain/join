@@ -15,15 +15,18 @@ export default defineConfig([
         ...globals.browser,
         users: "writable",
         loaduser: "writable",
+        generateContactDropdownHtml: "readonly",
       },
     },
 
     rules: {
+      ...js.configs.recommended.rules,
+      "no-unused-vars": ["warn", {
+        vars: "local",
+        args: "after-used",
+      }],
       "no-undef": "warn",
-      "no-unused-vars": "warn",
       "no-unused-expressions": "error",
-      "no-unreachable": "error",
-      "no-constant-condition": "warn",
     },
   },
 ]);

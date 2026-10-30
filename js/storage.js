@@ -105,21 +105,26 @@ async function ifSessionStorageExist() {
  * Loads different parts of the application based on available global functions and session state.
  */
 
+
 async function loadAllIfElse() {
     if (window.loadSummaryProject) {
         loadSummaryProject();
         timeIfElse();
     }
+
     if (window.boardinit) {
         boardinit();
     }
-    if (typeof window.fillAddTaskSection === "function" && typeof window.boardinit !== "function") {
+
+    if (document.getElementById("add_task_page") && typeof window.fillAddTaskSection === "function") {
         window.fillAddTaskSection();
     }
+
     if (window.initContacts) {
         contactsIfElse();
     }
 }
+
 
 /**
  * Determines how to load contact information based on the presence of guest data in session storage.

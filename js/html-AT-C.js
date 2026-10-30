@@ -1,3 +1,4 @@
+
 function escapeHTML(value) {
     return String(value ?? "").replace(/[&<>"']/g, (char) => ({
         "&": "&amp;",
@@ -30,10 +31,9 @@ function safeColor(value) {
  * @param {array} array - This optional variable is the section of the board-page that the task should be created for.
  */
 function fillAddTaskSection(array) {
-    let page = document.getElementById("add_task_page");
-    let html = "";
+    const addTaskPage = document.getElementById("add_task_page");
 
-    html += /*html*/ `
+    const html = /*html*/ `
         <main class="add-task">
             <h1>Add Task</h1>
             <form class="add-task-form-section" autocomplete="off">
@@ -82,7 +82,7 @@ function fillAddTaskSection(array) {
                             <div class="input-with-button-wrapper">
                                 <input id="input_with_button_date" class="styled-input focus-blue"
                                     placeholder="dd/mm/yyyy" type="text" required
-                                    pattern="([0-9]{2}\/[0-9]{2}\/[0-9]{4})">
+                                    pattern="([0-9]{2}/[0-9]{2}/[0-9]{4})">
                                 <input id="input_calendar" class="calendar-input" type="date" value=""
                                     onchange="transferDate()">
                             </div>
@@ -129,20 +129,16 @@ function fillAddTaskSection(array) {
                         <div id="add_task_subtask">
                             <h3>Subtask</h3>
                             <div class="input-with-button-wrapper">
-                                <input class="styled-input focus-blue" placeholder="Add new subtask" type="text"
-                                    id="input_with_button_subtask" onfocusin="changeSubtaskIcons('in')"
-                                    onfocusout="changeSubtaskIcons('out')" maxlength="35">
+                                <input class="styled-input focus-blue" placeholder="Add new subtask" type="text" id="input_with_button_subtask" onfocusin="changeSubtaskIcons('in')" onfocusout="changeSubtaskIcons('out')" maxlength="35">
                                 <a id="add_subtask_button" onclick="setFocusOnElement('subtask')">
                                     <img src="./assets/img/add.png" alt="add">
                                 </a>
                                 <div id="confirm_subtask_container" class="input-with-double-button dnone">
-                                    <a id="clear_subtask_button"
-                                        onmousedown="dontChangeFocus(event); clearInput('input_with_button_subtask')">
+                                    <a id="clear_subtask_button" onmousedown="dontChangeFocus(event); clearInput('input_with_button_subtask')">
                                         <img src="./assets/img/cross.svg" alt="cross">
                                     </a>
                                     <div class="separator-vertical"></div>
-                                    <a id="confirm_subtask_button"
-                                        onmousedown="dontChangeFocus(event); addSubtask('input_with_button_subtask')">
+                                    <a id="confirm_subtask_button" onmousedown="dontChangeFocus(event); addSubtask('input_with_button_subtask')">
                                         <img src="./assets/img/check.svg" alt="check">
                                     </a>
                                 </div>
@@ -175,11 +171,11 @@ function fillAddTaskSection(array) {
         </main>
     `;
 
-    page.innerHTML = html;
+    addTaskPage.innerHTML = html;
 
-    const form = page.querySelector(".add-task-form-section");
+    const addTaskForm = addTaskPage.querySelector(".add-task-form-section");
 
-    form.addEventListener("submit", function (event) {
+    addTaskForm.addEventListener("submit", (event) => {
         event.preventDefault();
         addToTasks(array);
     });
@@ -194,15 +190,11 @@ function fillAddTaskSection(array) {
  * @returns - The generated HTML-code of the entry.
  */
 function generateCategoryHtml(category) {
-    let html = "";
-
-    html += /*html*/ `
+    return /*html*/ `
         <div class="drop-down-category-entry pointer" onmousedown="dontChangeFocus(event); selectTaskCategory(${safeId(category.id)})">
             <span class="category-name">${escapeHTML(category.name)}</span>
         </div>
     `;
-
-    return html;
 }
 
 /**
@@ -213,9 +205,7 @@ function generateCategoryHtml(category) {
  * @returns - The HTML-Code of the entry.
  */
 function generateContactDropdownHtml(contact, contactdata) {
-    let html = "";
-
-    html += /*html*/ `
+    return /*html*/ `
         <div class="contact-list-entry pointer" onmousedown="dontChangeFocus(event); selectTaskContact(this, ${safeId(contact.id)})">
             <div class="profile-info-box">
                 <span class="profile-badge" style="background-color: ${safeColor(contact.color)};">${escapeHTML(contactdata.abbreviation)}</span>
@@ -224,8 +214,6 @@ function generateContactDropdownHtml(contact, contactdata) {
             <img src="./assets/img/check_button_unchecked.svg" alt="">
         </div>
     `;
-
-    return html;
 }
 
 /**
@@ -236,9 +224,7 @@ function generateContactDropdownHtml(contact, contactdata) {
  * @returns - The generated HTML-code of the subtask.
  */
 function generateSubtaskHtml(name, id) {
-    let html = "";
-
-    html += /*html*/ `
+    return /*html*/ `
         <ul>
             <li>${escapeHTML(name)}</li>
         </ul>
@@ -253,8 +239,6 @@ function generateSubtaskHtml(name, id) {
             </a>
         </div>
     `;
-
-    return html;
 }
 
 /**
@@ -263,12 +247,11 @@ function generateSubtaskHtml(name, id) {
  * @returns - The generated HTML-code of the subtask with wrapper.
  */
 function renderSubtask() {
-    let html = `<div class="selected-subtask-container pointer" ondblclick="editSubtask(this, ${safeId(currentSubtask.id)})">`;
-
-    html += generateSubtaskHtml(currentSubtask.name, currentSubtask.id);
-    html += `</div>`;
-
-    return html;
+    return /*html*/ `
+        <div class="selected-subtask-container pointer" ondblclick="editSubtask(this, ${safeId(currentSubtask.id)})">
+            ${generateSubtaskHtml(currentSubtask.name, currentSubtask.id)}
+        </div>
+    `;
 }
 
 /**
@@ -278,9 +261,7 @@ function renderSubtask() {
  * @returns - The HTML-code of the edit-subtask-section.
  */
 function generateEditSubtaskHtml(id) {
-    let html = "";
-
-    html += /*html*/ `
+    return /*html*/ `
         <input type="text" id="subtask_edition_input_${safeId(id)}">
         <div id="subtask_edition_buttons" class="double-button-container">
             <a id="delete_subtask_button"
@@ -294,8 +275,6 @@ function generateEditSubtaskHtml(id) {
             </a>
         </div>
     `;
-
-    return html;
 }
 
 /**
@@ -321,10 +300,9 @@ function generateSeparatorHtml(letter) {
  * @returns - The HTML-code of the entry.
  */
 function generateContactHtml(contact, contactdata) {
-    let html = "";
     const email = String(contact.email ?? "");
 
-    html += /*html*/ `
+    return /*html*/ `
         <div class="contact contact-list-entry pointer" onclick="openContact(${safeId(contact.id)}, this)">
             <div class="contact-info-box">
                 <div>
@@ -337,8 +315,6 @@ function generateContactHtml(contact, contactdata) {
             </div>
         </div>
     `;
-
-    return html;
 }
 
 /**
@@ -349,13 +325,11 @@ function generateContactHtml(contact, contactdata) {
  * @returns - The HTML-code of the contact-details-section.
  */
 function generateContactDetailBoxHtml(contact, contactdata) {
-    let html = "";
-
     const email = String(contact.email ?? "");
     const phone = String(contact.phone ?? "");
     const phoneHref = phone.replace(/[^\d+]/g, "");
 
-    html += /*html*/ `
+    return /*html*/ `
         <div class="contact-detail-box-head">
             <div class="profile-badge-big-box">
                 <span class="profile-badge-big" style="background-color: ${safeColor(contact.color)};">${escapeHTML(contactdata.abbreviation)}</span>
@@ -384,8 +358,6 @@ function generateContactDetailBoxHtml(contact, contactdata) {
             <a class="profile-phone" href="tel:${escapeHTML(phoneHref)}">${escapeHTML(phone)}</a>
         </div>
     `;
-
-    return html;
 }
 
 /**
@@ -397,21 +369,19 @@ function generateContactDetailBoxHtml(contact, contactdata) {
  * @returns - The generated HTML-code of the edit-contact-section.
  */
 function generateEditContactHtml(contact, abbreviation, fullname) {
-    let html = "";
-
-    html += /*html*/ `
+    return /*html*/ `
     <div class="overlay-box">
       <div class="overlay-box-head">
-          <img src="./assets/img/join_logo.svg" alt="logo" />
-          <h1>Edit contact</h1>
-          <img src="./assets/img/line_horizontal.svg" alt="line" />
-      </div>
-      <div class="overlay-box-body">
+            <img src="./assets/img/join_logo.svg" alt="logo" />
+            <h1>Edit contact</h1>
+            <img src="./assets/img/line_horizontal.svg" alt="line" />
+        </div>
+        <div class="overlay-box-body">
           <div class="overlay-body-content">
-              <div class="profile-badge-big-box">
-                  <span class="profile-badge-big" style="background-color: ${safeColor(contact.color)}">${escapeHTML(abbreviation)}</span>
-              </div>
-              <form class="edit-contact-form-box" onsubmit="saveEditedContact(${safeId(contact.id)});return false" autocomplete="off">
+                <div class="profile-badge-big-box">
+                    <span class="profile-badge-big" style="background-color: ${safeColor(contact.color)}">${escapeHTML(abbreviation)}</span>
+                </div>
+                <form class="edit-contact-form-box" onsubmit="saveEditedContact(${safeId(contact.id)});return false" autocomplete="off">
                   <div class="input-with-img-wrapper">
                       <input type="text" value="${escapeHTML(fullname)}" pattern="[A-Za-zäöüÄÖÜ]+([ ][A-Za-zäöüÄÖÜ]+)+" class="styled-input focus-blue edit-contact-input" id="edit_contact_name" oninvalid="this.setCustomValidity('Enter your full name here: Firstname (Secondname) Lastname')" oninput="this.setCustomValidity('')" maxlength="35">
                       <img src="./assets/img/person.svg" alt="person" />
@@ -433,16 +403,14 @@ function generateEditContactHtml(contact, abbreviation, fullname) {
                           <img src="./assets/img/check.svg" alt="check" />
                       </button>
                   </div>
-              </form>
+                </form>
           </div>
-      </div>
-      <a class="close-overlay-box" onclick="closeOverlay()">
+        </div>
+        <a class="close-overlay-box" onclick="closeOverlay()">
           <img src="./assets/img/cross.svg" alt="close" />
-      </a>
+        </a>
     </div>
     `;
-
-    return html;
 }
 
 /**
@@ -452,9 +420,7 @@ function generateEditContactHtml(contact, abbreviation, fullname) {
  * @returns - The HTML-code for the add-contact-card.
  */
 function generateAddContactHtml(color) {
-    let html = "";
-
-    html += /*html*/ `
+    return /*html*/ `
     <div class="overlay-box">
         <div class="overlay-box-head">
             <img src="./assets/img/join_logo.svg" alt="logo" />
@@ -499,6 +465,4 @@ function generateAddContactHtml(color) {
         </div>
     </div>
     `;
-
-    return html;
 }
